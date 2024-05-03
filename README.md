@@ -10,3 +10,4 @@ Tracking your daily runs
 - [x] MVVM
 - [x] Material design 3
 - [x] oAuth authentication
+- [x] Gradle dependency management
