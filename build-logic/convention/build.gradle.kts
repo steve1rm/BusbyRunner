@@ -11,3 +11,12 @@ dependencies {
     compileOnly(libs.ksp.gradlePlugin)
     compileOnly(libs.room.gradlePlugin)
 }
+
+gradlePlugin {
+    this.plugins {
+        this.register("androidApplication") {
+            this.id = "busbyrunner.application.android"
+            this.implementationClass = "AndroidApplicationConventionPlugin"
+        }
+    }
+}
