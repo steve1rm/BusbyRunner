@@ -1,4 +1,6 @@
 import com.android.build.api.dsl.ApplicationExtension
+import me.androidbox.convention.ExtensionType
+import me.androidbox.convention.configureBuildTypes
 import me.androidbox.convention.configureKotlinAndroid
 import me.androidbox.convention.libs
 import org.gradle.api.Plugin
@@ -7,6 +9,7 @@ import org.gradle.api.Project
 
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
+
         target.run {
             this.pluginManager.run {
                 this.apply("com.android.application")
@@ -19,9 +22,12 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                     this.targetSdk = libs.findVersion("projectTargetSdkVersion").get().toString().toInt()
                     this.versionName = libs.findVersion("projectVersionName").get().toString()
                     this.versionCode = libs.findVersion("projectVersionCode").get().toString().toInt()
+                    this.minSdk = libs.findVersion("projectMinSdkVersion").get().toString().toInt()
                 }
 
                 configureKotlinAndroid(this)
+
+                configureBuildTypes(this, ExtensionType.APPLICATION)
             }
         }
     }
