@@ -19,9 +19,9 @@ internal fun Project.configureKotlinAndroid(
             this.sourceCompatibility = JavaVersion.VERSION_17
             this.targetCompatibility = JavaVersion.VERSION_17
         }
-
-        configureKotlin()
     }
+    
+    configureKotlin()
 
     dependencies {
         "coreLibraryDesugaring"(libs.findLibrary("desugar.jdk.libs").get())

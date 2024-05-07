@@ -4,7 +4,12 @@ plugins {
 
 android {
     namespace = "me.androidbox.core.data"
+
+   compileOptions {
+       this.isCoreLibraryDesugaringEnabled = true
+   }
 }
+
 
 dependencies {
     implementation(projects.core.domain)
