@@ -23,5 +23,11 @@ gradlePlugin {
             this.id = "busbyrunner.application.android.compose"
             this.implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
+
+        this.register("androidLibrary") {
+            this.id = "busbyrunner.android.library"
+            this.implementationClass = "AndroidLibraryConventionPlugin"
+
+        }
     }
 }

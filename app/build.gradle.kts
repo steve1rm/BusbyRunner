@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.mapsplatform.secrets.plugin)
     alias(libs.plugins.busbyrunner.application.android.compose)
+    alias(libs.plugins.mapsplatform.secrets.plugin)
 }
 
 android {
@@ -21,14 +21,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
     }
 
     packaging {

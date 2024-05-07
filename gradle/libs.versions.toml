@@ -120,5 +120,6 @@ androidDynamicFeature = { id = "com.android.dynamic-feature", version.ref = "agp
 mapsplatform-secrets-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsPlugin"}
 busbyrunner-application-android = { id = "busbyrunner.application.android", version = "unspecified" }
 busbyrunner-application-android-compose = { id = "busbyrunner.application.android.compose", version = "unspecified" }
+busbyrunner-android-library = { id = "busbyrunner.android.library", version = "unspecified" }
 
 [bundles]
