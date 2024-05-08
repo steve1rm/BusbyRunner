@@ -121,5 +121,6 @@ mapsplatform-secrets-plugin = { id = "com.google.android.libraries.mapsplatform.
 busbyrunner-application-android = { id = "busbyrunner.application.android", version = "unspecified" }
 busbyrunner-application-android-compose = { id = "busbyrunner.application.android.compose", version = "unspecified" }
 busbyrunner-android-library = { id = "busbyrunner.android.library", version = "unspecified" }
+busbyrunner-android-library-compose = { id = "busbyrunner.android.library.compose", version = "unspecified" }
 
 [bundles]
