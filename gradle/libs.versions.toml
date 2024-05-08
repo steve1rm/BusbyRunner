@@ -125,6 +125,7 @@ busbyrunner-android-library-compose = { id = "busbyrunner.android.library.compos
 busbyrunner-android-feature-ui = { id = "busbyrunner.android.feature.ui", version = "unspecified" }
 busbyrunner-android-room = { id = "busbyrunner.android.room", version = "unspecified" }
 busbyrunner-jvm-library = { id = "busbyrunner.jvm.library", version = "unspecified" }
+busbyrunner-jvm-ktor = { id = "busbyrunner.jvm.ktor", version = "unspecified" }
 
 [bundles]
 compose = [
@@ -140,6 +141,15 @@ compose = [
 compose-debug = [
     "androidx-compose-ui-tooling",
     "androidx-compose-ui-test-manifest"
+]
+
+ktor = [
+    "ktor-client-auth",
+    "ktor-client-cio",
+    "ktor-client-content-negotiation",
+    "ktor-client-core",
+    "ktor-serialization-kotlinx-json",
+    "ktor-client-logging"
 ]
 
 # data and domain layaers

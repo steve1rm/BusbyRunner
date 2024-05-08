@@ -48,5 +48,10 @@ gradlePlugin {
             this.id = "busbyrunner.jvm.library"
             this.implementationClass = "JvmLibraryConventionPlugin"
         }
+
+        this.register("jvmKtor") {
+            this.id = "busbyrunner.jvm.ktor"
+            this.implementationClass = "JvmKtorConventionPlugin"
+        }
     }
 }
