@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.busbyrunner.android.library)
+    alias(libs.plugins.busbyrunner.android.room)
 }
 
 android {

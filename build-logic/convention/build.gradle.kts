@@ -38,5 +38,15 @@ gradlePlugin {
             this.id = "busbyrunner.android.feature.ui"
             this.implementationClass = "AndroidFeatureUiConventionPlugin"
         }
+
+        this.register("androidRoom") {
+            this.id = "busbyrunner.android.room"
+            this.implementationClass = "AndroidRoomConventionPlugin"
+        }
+
+        this.register("jvmLibrary") {
+            this.id = "busbyrunner.jvm.library"
+            this.implementationClass = "JvmLibraryConventionPlugin"
+        }
     }
 }

@@ -123,6 +123,8 @@ busbyrunner-application-android-compose = { id = "busbyrunner.application.androi
 busbyrunner-android-library = { id = "busbyrunner.android.library", version = "unspecified" }
 busbyrunner-android-library-compose = { id = "busbyrunner.android.library.compose", version = "unspecified" }
 busbyrunner-android-feature-ui = { id = "busbyrunner.android.feature.ui", version = "unspecified" }
+busbyrunner-android-room = { id = "busbyrunner.android.room", version = "unspecified" }
+busbyrunner-jvm-library = { id = "busbyrunner.jvm.library", version = "unspecified" }
 
 [bundles]
 compose = [
