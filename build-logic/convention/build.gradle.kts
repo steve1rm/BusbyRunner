@@ -33,5 +33,10 @@ gradlePlugin {
             this.id = "busbyrunner.android.library.compose"
             this.implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
+
+        this.register("androidFeatureUi") {
+            this.id = "busbyrunner.android.feature.ui"
+            this.implementationClass = "AndroidFeatureUiConventionPlugin"
+        }
     }
 }
