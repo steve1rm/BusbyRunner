@@ -17,7 +17,7 @@ inline fun <D, E : Error, R> Result<D, E>.mapper(map: (D) -> R): Result<R, E> {
 }
 
 fun <D, E: Error> Result<D, E>.asEmptyDataResult(): EmptyDataResult<E> {
-    return mapper {}
+    return mapper { }
 }
 
 typealias EmptyDataResult<E> = Result<Unit, E>
