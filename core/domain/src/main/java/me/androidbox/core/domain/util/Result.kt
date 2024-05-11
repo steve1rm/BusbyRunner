@@ -1,11 +1,11 @@
 package me.androidbox.core.domain.util
 
-sealed interface Result<out D, out E: Error> {
-    data class Success<out D>(val data: D): Result<D, Nothing>
+sealed interface Result<out T, out E: Error> {
+    data class Success<out T>(val data: T): Result<T, Nothing>
     data class Failure<out E: Error>(val error: E): Result<Nothing, E>
 }
 
-inline fun <D, E : Error, R> Result<D, E>.mapper(map: (D) -> R): Result<R, E> {
+inline fun <T, E : Error, R> Result<T, E>.mapper(map: (T) -> R): Result<R, E> {
     return when(this) {
         is Result.Failure -> {
             Result.Failure(this.error)
@@ -16,7 +16,7 @@ inline fun <D, E : Error, R> Result<D, E>.mapper(map: (D) -> R): Result<R, E> {
     }
 }
 
-fun <D, E: Error> Result<D, E>.asEmptyDataResult(): EmptyDataResult<E> {
+fun <T, E: Error> Result<T, E>.asEmptyDataResult(): EmptyDataResult<E> {
     return mapper { }
 }
 
