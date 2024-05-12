@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import me.androidbox.auth.presentation.auth.IntroScreen
 import me.androidbox.core.presentation.designsystem.BusbyRunnerTheme
 import me.androidbox.core.presentation.designsystem.analyticIcon
 
@@ -22,11 +23,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background) {
 
-                    Text(
-                        text = "Hello, World!",
-                        style = MaterialTheme.typography.headlineSmall)
-                    
-                    Image(imageVector = analyticIcon, contentDescription = null)
+                    IntroScreen {
+
+                    }
                 }
             }
         }
