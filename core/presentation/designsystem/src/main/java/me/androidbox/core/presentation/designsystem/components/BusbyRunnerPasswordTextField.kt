@@ -103,7 +103,7 @@ fun BusbyRunnerPasswordTextField(
                     },
                     shape = RoundedCornerShape(16.dp)
                 )
-                .padding(12.dp)
+                .padding(horizontal = 12.dp)
                 .onFocusChanged { focusState ->
                     isFocused = focusState.isFocused
                 },
@@ -163,7 +163,7 @@ fun PreviewBusbyRunnerPasswordTextField() {
         BusbyRunnerPasswordTextField(
             state = rememberTextFieldState(),
             hint = "example@test.com",
-            title = "Email",
+            title = "Password",
             isPasswordVisible = false,
             onTogglePasswordVisibility = {},
             modifier = Modifier.fillMaxWidth())

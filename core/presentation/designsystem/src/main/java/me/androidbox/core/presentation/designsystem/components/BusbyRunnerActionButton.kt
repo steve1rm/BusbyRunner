@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -23,6 +24,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import me.androidbox.core.presentation.designsystem.BusbyBlack
+import me.androidbox.core.presentation.designsystem.BusbyGray
 import me.androidbox.core.presentation.designsystem.BusbyRunnerTheme
 import me.androidbox.core.presentation.designsystem.R
 
@@ -38,11 +41,14 @@ fun BusbyRunnerActionButton(
         modifier = modifier
             .height(IntrinsicSize.Min), /** Sets the height to the minimum height of one of its children */
         enabled = isEnabled,
-        colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = MaterialTheme.colorScheme.onBackground,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = BusbyGray,
+            disabledContentColor = BusbyBlack
         ),
         border = BorderStroke(width = 0.6.dp, color = MaterialTheme.colorScheme.onBackground),
-        shape = CircleShape.copy(CornerSize(100f)),
+        shape = RoundedCornerShape(100f),
         onClick = {
             onClicked()
         }) {
@@ -59,7 +65,7 @@ fun BusbyRunnerActionButton(
                     .size(16.dp)
                     .alpha(if (isLoading) 1f else 0f),
                 strokeWidth = 1.6.dp,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onPrimary
             )
             Text(
                 modifier = Modifier.alpha(if(isLoading) 0f else 1f),
@@ -74,9 +80,9 @@ fun BusbyRunnerActionButton(
 @Preview(showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
 )
-fun PreviewBusbyRunnerOutlineActionButton() {
+fun PreviewBusbyRunnerActionButton() {
     BusbyRunnerTheme {
-        BusbyRunnerOutlineActionButton(
+        BusbyRunnerActionButton(
             text = stringResource(id = R.string.sign_up),
             isLoading = false,
             isEnabled = true) {

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -41,11 +40,8 @@ fun BusbyRunnerOutlineActionButton(
             .height(IntrinsicSize.Min),
         /** Sets the height to the minimum height of one of its children */ /** Sets the height to the minimum height of one of its children */
         enabled = isEnabled,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = BusbyGray,
-            disabledContentColor = BusbyBlack
+        colors = ButtonDefaults.outlinedButtonColors(
+            contentColor = MaterialTheme.colorScheme.onBackground,
         ),
         shape = CircleShape.copy(CornerSize(100f)),
         onClick = {
@@ -81,9 +77,9 @@ fun BusbyRunnerOutlineActionButton(
 @Preview(showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
 )
-fun PreviewBusbyRunnerActionButton() {
+fun PreviewBusbyRunnerOutlineActionButton() {
     BusbyRunnerTheme {
-        BusbyRunnerActionButton(
+        BusbyRunnerOutlineActionButton(
             text = stringResource(id = R.string.sign_up),
             isLoading = false) {
         }
