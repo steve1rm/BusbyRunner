@@ -23,7 +23,8 @@ val DarkColorScheme = darkColorScheme(
     onPrimary = BusbyBlack,
     onBackground = BusbyWhite,
     onSurface = BusbyWhite,
-    onSurfaceVariant = BusbyGray
+    onSurfaceVariant = BusbyGray,
+    error = BusbyDarkRed
 )
 
 val LightColorScheme = darkColorScheme(
@@ -36,7 +37,8 @@ val LightColorScheme = darkColorScheme(
     onPrimary = BusbyBlackLight,
     onBackground = BusbyWhiteLight,
     onSurface = BusbyWhiteLight,
-    onSurfaceVariant = BusbyGrayLight
+    onSurfaceVariant = BusbyGrayLight,
+    error = BusbyDarkRed
 )
 
 @Composable

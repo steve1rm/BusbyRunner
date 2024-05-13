@@ -78,7 +78,8 @@ fun PreviewBusbyRunnerOutlineActionButton() {
     BusbyRunnerTheme {
         BusbyRunnerOutlineActionButton(
             text = stringResource(id = R.string.sign_up),
-            isLoading = false) {
+            isLoading = false,
+            isEnabled = true) {
         }
     }
 }
