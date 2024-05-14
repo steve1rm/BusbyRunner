@@ -4,6 +4,7 @@ import android.app.Application
 import me.androidbox.auth.data.di.authDataModule
 import me.androidbox.auth.presentation.di.authViewModelModule
 import me.androidbox.busbyrunner.di.appModule
+import me.androidbox.core.data.di.coreDataModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -24,7 +25,8 @@ class BusbyRunnerApplication : Application() {
             modules(
                 appModule,
                 authViewModelModule,
-                authDataModule
+                authDataModule,
+                coreDataModule
             )
         }
     }

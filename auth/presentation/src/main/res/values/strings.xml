@@ -17,4 +17,6 @@
     <string name="lower_case_character">Contains lowercase character</string>
     <string name="upper_case_character">Contains uppercase character</string>
     <string name="register">Register</string>
+    <string name="email_exists">User with that email already exists</string>
+    <string name="registration_success">Registration successful you can login in now</string>
 </resources>

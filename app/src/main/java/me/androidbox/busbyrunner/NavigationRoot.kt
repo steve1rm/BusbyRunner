@@ -1,7 +1,8 @@
 package me.androidbox.busbyrunner
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
+import androidx.compose.ui.input.pointer.PointerIcon.Companion.Text
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -50,10 +51,14 @@ private fun NavGraphBuilder.authGraph(navHostController: NavHostController) {
                     }
 
                 },
-                onSuccessfullSign = {
+                onSuccessfulSignUp = {
                     navHostController.navigate("login")
                 },
             )
+        }
+
+        composable(route = "login") {
+            Text(text = "Login success")
         }
     }
 }

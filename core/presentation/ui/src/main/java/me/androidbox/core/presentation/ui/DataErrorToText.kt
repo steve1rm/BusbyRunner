@@ -2,7 +2,7 @@ package me.androidbox.core.presentation.ui
 
 import me.androidbox.core.domain.util.DataError
 
-fun DataError.toErrorString(): UiText {
+fun DataError.toUiText(): UiText {
     return when(this) {
         DataError.Local.DISK_FULL -> UiText.StringResource(
             resId = R.string.error_disk_full
