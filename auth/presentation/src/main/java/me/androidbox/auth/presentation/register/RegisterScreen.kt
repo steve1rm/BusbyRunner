@@ -96,7 +96,7 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 PasswordRequirement(
-                    isValid = registerState.passwordValidationState.isValidPassword,
+                    isValid = registerState.passwordValidationState.hasMinLength,
                     text = stringResource(id = R.string.password_length, UserDataValidator.MIN_PASSWORD_LENGTH),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -129,7 +129,7 @@ fun RegisterScreen(
                 BusbyRunnerActionButton(
                     text = stringResource(id = R.string.register),
                     isLoading = registerState.isRegistering,
-                    isEnabled = true,
+                    isEnabled = registerState.canRegister,
                     modifier = Modifier.fillMaxWidth(),
                     onClicked = {
                         onAction(RegisterAction.OnRegisterClicked)

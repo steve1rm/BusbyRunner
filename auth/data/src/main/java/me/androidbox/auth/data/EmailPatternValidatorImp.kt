@@ -5,7 +5,7 @@ import me.androidbox.auth.domain.PatternValidator
 
 object EmailPatternValidatorImp : PatternValidator {
 
-    override fun matchs(value: String): Boolean {
+    override fun matches(value: String): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(value).matches()
     }
 }
