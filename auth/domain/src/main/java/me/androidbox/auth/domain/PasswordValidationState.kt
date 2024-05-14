@@ -1,4 +1,4 @@
-package me.androidbox.auth.presentation.register
+package me.androidbox.auth.domain
 
 data class PasswordValidationState(
     val hasMinLength: Boolean = false,
