@@ -24,7 +24,7 @@ class RegisterViewModel(
     init {
         registerState.email.textAsFlow()
             .onEach { email ->
-                registerState.copy(
+                registerState = registerState.copy(
                     isValidEmail = userDataValidator.isValidEmail(email.toString())
                 )
             }
@@ -32,7 +32,7 @@ class RegisterViewModel(
 
         registerState.password.textAsFlow()
             .onEach { password ->
-                registerState.copy(
+                registerState = registerState.copy(
                     passwordValidationState = userDataValidator.validatePassword(password.toString())
                 )
             }
