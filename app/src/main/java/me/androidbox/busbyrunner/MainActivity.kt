@@ -8,18 +8,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import me.androidbox.auth.presentation.register.RegisterViewModel
 import me.androidbox.core.presentation.designsystem.BusbyRunnerTheme
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    val registerViewModel by viewModel<RegisterViewModel>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
 
         setContent {
             BusbyRunnerTheme {

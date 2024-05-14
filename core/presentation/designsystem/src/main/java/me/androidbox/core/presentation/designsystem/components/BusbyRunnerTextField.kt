@@ -106,7 +106,7 @@ fun BusbyRunnerTextField(
                 .clip(RoundedCornerShape(16.dp))
                 .background(
                     color = if (isFocused) {
-                        MaterialTheme.colorScheme.primary.copy( alpha = 0.5f)
+                        MaterialTheme.colorScheme.primary.copy( alpha = 0.05f)
                     } else {
                         MaterialTheme.colorScheme.surface
                     }
