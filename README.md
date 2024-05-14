@@ -7,6 +7,7 @@ Tracking your daily runs
 - [x] Clean architecture
 - [x] Gradle version catalog
 - [x] kotlin coroutines
+- [x] Flows
 - [x] MVVM
 - [x] Material design 3
 - [x] oAuth authentication
