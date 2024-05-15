@@ -34,6 +34,13 @@ fun RegisterScreenRoot(
     RegisterScreen(
         registerState = registerViewModel.registerState,
         onAction = { registerAction ->
-            registerViewModel.onAction(registerAction)
+            when(registerAction) {
+                RegisterAction.OnLoginClicked -> {
+                    onSignUpClicked()
+                }
+                else -> {
+                    registerViewModel.onAction(registerAction)
+                }
+            }
         })
 }

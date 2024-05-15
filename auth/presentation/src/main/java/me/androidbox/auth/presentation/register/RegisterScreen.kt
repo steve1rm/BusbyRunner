@@ -151,11 +151,12 @@ private fun buildDescriptionAnnotatedString(): AnnotatedString {
         ) {
             this.append(stringResource(id = R.string.existing_account))
             this.append(" ")
-            this.pushStringAnnotation(
-                tag = "clickable_text",
-                annotation = stringResource(id = R.string.login),
-            )
         }
+
+        this.pushStringAnnotation(
+            tag = "clickable_text",
+            annotation = stringResource(id = R.string.login),
+        )
 
         this.withStyle(
             SpanStyle(
@@ -166,6 +167,7 @@ private fun buildDescriptionAnnotatedString(): AnnotatedString {
         ) {
             this.append(text = stringResource(id = R.string.login))
         }
+        pop()
     }
     return annotatedString
 }

@@ -63,7 +63,7 @@ class RegisterViewModel(
     fun onAction(registerAction: RegisterAction) {
         when(registerAction) {
             RegisterAction.OnLoginClicked -> {
-                
+
             }
             RegisterAction.OnRegisterClicked -> {
                 register()
