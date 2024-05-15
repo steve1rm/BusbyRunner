@@ -7,13 +7,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import me.androidbox.core.presentation.designsystem.BusbyRunnerTheme
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
+    private val mainViweModel by viewModel<MainViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        installSplashScreen().apply {
+           this.setKeepOnScreenCondition {
+               mainViweModel.mainState.isAuthenticating
+           }
+        }
 
         setContent {
             BusbyRunnerTheme {
@@ -21,8 +31,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background) {
 
-                    val navHostController = rememberNavController()
-                    NavigationRoot(navHostController = navHostController)
+                    if(!mainViweModel.mainState.isAuthenticating) {
+                        val navHostController = rememberNavController()
+                        NavigationRoot(
+                            isLoggedIn = mainViweModel.mainState.isLoggedIn,
+                            navHostController = navHostController)
+                    }
                 }
             }
         }

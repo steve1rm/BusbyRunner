@@ -21,7 +21,8 @@ class EncryptedSessionStorageImp(
             val json = sharedPreferences.getString(KEY_AUTH_INFO, null)
 
             json?.let {
-                Json.decodeFromString<AuthorizationInfo>(json).toAuthorizationInfo()
+                Json.decodeFromString<AuthorizationSerializable>(json).toAuthorizationInfo()
+
             }
         }
     }

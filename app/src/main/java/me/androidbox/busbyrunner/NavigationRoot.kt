@@ -15,14 +15,15 @@ import me.androidbox.auth.presentation.register.RegisterScreenRoot
 
 @Composable
 fun NavigationRoot(
+    isLoggedIn: Boolean,
     navHostController: NavHostController
 ) {
     NavHost(
         navController = navHostController,
-        startDestination = "auth"
+        startDestination = if(isLoggedIn) "run" else "auth"
     ) {
-        authGraph(navHostController)
         runGraph(navHostController)
+        authGraph(navHostController)
     }
 }
 

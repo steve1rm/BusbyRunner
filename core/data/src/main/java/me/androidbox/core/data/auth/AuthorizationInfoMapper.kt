@@ -10,7 +10,7 @@ fun AuthorizationInfo.toAuthorizationSerializable(): AuthorizationSerializable {
     )
 }
 
-fun AuthorizationInfo.toAuthorizationInfo(): AuthorizationInfo {
+fun AuthorizationSerializable.toAuthorizationInfo(): AuthorizationInfo {
     return AuthorizationInfo(
         accessToken = this.accessToken,
         refreshToken = this.refreshToken,
