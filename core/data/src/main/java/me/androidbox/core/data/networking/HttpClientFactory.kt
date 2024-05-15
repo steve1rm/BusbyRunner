@@ -51,9 +51,7 @@ class HttpClientFactory(
             install(Auth) {
                 this.bearer {
                     this.loadTokens {
-                        val authorizationInfo = sessionStorage.get()
-
-                        authorizationInfo?.let { authorizationInfo ->
+                       sessionStorage.get()?.let { authorizationInfo ->
                             BearerTokens(
                                 accessToken = authorizationInfo.accessToken,
                                 refreshToken = authorizationInfo.refreshToken
@@ -61,6 +59,7 @@ class HttpClientFactory(
                         }
                     }
 
+                    /** ktor will take care of the 401 unauthorized request */
                     this.refreshTokens {
                         val authorizationInfo = sessionStorage.get()
 

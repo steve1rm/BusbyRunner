@@ -1,14 +1,13 @@
 package me.androidbox.busbyrunner
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.input.pointer.PointerIcon.Companion.Text
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import me.androidbox.auth.presentation.auth.IntroScreenRoot
+import me.androidbox.auth.presentation.login.LoginScreenRoot
 import me.androidbox.auth.presentation.register.RegisterScreenRoot
 
 @Composable
@@ -49,7 +48,6 @@ private fun NavGraphBuilder.authGraph(navHostController: NavHostController) {
                         }
                         this.restoreState = true
                     }
-
                 },
                 onSuccessfulSignUp = {
                     navHostController.navigate("login")
@@ -58,7 +56,25 @@ private fun NavGraphBuilder.authGraph(navHostController: NavHostController) {
         }
 
         composable(route = "login") {
-            Text(text = "Login success")
+            LoginScreenRoot(
+                onLoginSuccess = {
+                    navHostController.navigate("run") {
+                        this.popUpTo("auth") {
+                            this.inclusive = true
+                        }
+
+                    }
+                },
+                onSignUpClicked = {
+                    navHostController.navigate("register") {
+                        this.popUpTo("login") {
+                            this.inclusive = true
+                            this.saveState = true
+                        }
+                        this.restoreState = true
+                    }
+                }
+            )
         }
     }
 }

@@ -20,4 +20,14 @@ class AuthorizationRepositoryImp(
                 password = password)
         )
     }
+
+    override suspend fun login(email: String, password: String): EmptyResult<DataError.Network> {
+        return httpClient.post<LoginRequest, Unit>(
+            route = "/login",
+            body = LoginRequest(
+                email,
+                password
+            )
+        )
+    }
 }
