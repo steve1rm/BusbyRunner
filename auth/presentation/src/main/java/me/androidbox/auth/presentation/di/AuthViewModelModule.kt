@@ -19,6 +19,6 @@ val authViewModelModule = module {
 
     //viewModelOf(::LoginViewModel)
     viewModel<LoginViewModel> {
-        LoginViewModel(get<AuthorizationRepository>())
+        LoginViewModel(get<AuthorizationRepository>(), get<UserDataValidator>())
     }
 }

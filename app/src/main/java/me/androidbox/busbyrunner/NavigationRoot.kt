@@ -1,11 +1,14 @@
 package me.androidbox.busbyrunner
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navigation
 import me.androidbox.auth.presentation.auth.IntroScreenRoot
 import me.androidbox.auth.presentation.login.LoginScreenRoot
 import me.androidbox.auth.presentation.register.RegisterScreenRoot
@@ -19,6 +22,7 @@ fun NavigationRoot(
         startDestination = "auth"
     ) {
         authGraph(navHostController)
+        runGraph(navHostController)
     }
 }
 
@@ -75,6 +79,18 @@ private fun NavGraphBuilder.authGraph(navHostController: NavHostController) {
                     }
                 }
             )
+        }
+    }
+}
+
+
+private fun NavGraphBuilder.runGraph(navHostController: NavHostController) {
+    this.navigation(
+        startDestination = "run_overview",
+        route = "run"
+    ) {
+        composable(route = "run_overview") {
+            Text(text = "This is the run screen", fontSize = 24.sp)
         }
     }
 }

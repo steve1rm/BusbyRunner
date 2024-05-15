@@ -22,6 +22,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -72,6 +73,7 @@ fun LoginScreen(
                 endIcon = CheckIcon,
                 hint = stringResource(id = R.string.example_email),
                 title = stringResource(id = R.string.email),
+                keyboardType = KeyboardType.Email,
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -93,6 +95,7 @@ fun LoginScreen(
             BusbyRunnerActionButton(
                 text = stringResource(id = R.string.login),
                 isLoading = loginState.isLoggingIn,
+                isEnabled = loginState.canLogin && !loginState.isLoggingIn,
                 onClicked = {
                     onLoginAction(LoginAction.OnLoginClicked)
                 }
