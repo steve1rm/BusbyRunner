@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import me.androidbox.auth.domain.AuthorizationRepository
@@ -37,8 +38,9 @@ class LoginViewModel(
             val isValidEmail = userDataValidator.isValidEmail(email = email.toString().trim())
 
             loginState = loginState.copy(
+                isValidEmail = isValidEmail,
                 canLogin = isValidEmail && password.isNotEmpty()) /** using notEmpty as a 'space' could be a valid password character */
-        }
+        }.launchIn(viewModelScope)
     }
 
     fun onLoginAction(action: LoginAction) {

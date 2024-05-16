@@ -129,7 +129,7 @@ fun RegisterScreen(
                 BusbyRunnerActionButton(
                     text = stringResource(id = R.string.register),
                     isLoading = registerState.isRegistering,
-                    isEnabled = registerState.canRegister,
+                    isEnabled = registerState.canRegister || !registerState.isRegistering,
                     modifier = Modifier.fillMaxWidth(),
                     onClicked = {
                         onAction(RegisterAction.OnRegisterClicked)

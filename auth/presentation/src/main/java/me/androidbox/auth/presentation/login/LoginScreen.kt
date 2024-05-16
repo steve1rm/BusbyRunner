@@ -70,7 +70,7 @@ fun LoginScreen(
             BusbyRunnerTextField(
                 state = loginState.email,
                 startIcon = EmailIcon,
-                endIcon = CheckIcon,
+                endIcon = if(loginState.isValidEmail) CheckIcon else null,
                 hint = stringResource(id = R.string.example_email),
                 title = stringResource(id = R.string.email),
                 keyboardType = KeyboardType.Email,
@@ -95,7 +95,7 @@ fun LoginScreen(
             BusbyRunnerActionButton(
                 text = stringResource(id = R.string.login),
                 isLoading = loginState.isLoggingIn,
-                isEnabled = loginState.canLogin && !loginState.isLoggingIn,
+                isEnabled = loginState.canLogin || !loginState.isLoggingIn,
                 onClicked = {
                     onLoginAction(LoginAction.OnLoginClicked)
                 }
