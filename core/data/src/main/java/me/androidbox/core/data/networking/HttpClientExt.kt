@@ -30,11 +30,11 @@ suspend inline fun <reified T : Any> HttpClient.get(route: String, queryParamete
     }
 }
 
-suspend inline fun <reified R: Any, reified T : Any> HttpClient.post(route: String, requestBody: Request): Result<T, DataError.Network> {
+suspend inline fun <reified Request, reified T : Any> HttpClient.post(route: String, body: Request): Result<T, DataError.Network> {
     return safeCall {
         post {
             this.url(constructRoute(route))
-            this.setBody(requestBody)
+            this.setBody(body)
         }
     }
 }

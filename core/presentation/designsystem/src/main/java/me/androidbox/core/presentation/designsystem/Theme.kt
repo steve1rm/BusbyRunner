@@ -23,7 +23,8 @@ val DarkColorScheme = darkColorScheme(
     onPrimary = BusbyBlack,
     onBackground = BusbyWhite,
     onSurface = BusbyWhite,
-    onSurfaceVariant = BusbyGray
+    onSurfaceVariant = BusbyGray,
+    error = BusbyDarkRed
 )
 
 val LightColorScheme = darkColorScheme(
@@ -36,7 +37,8 @@ val LightColorScheme = darkColorScheme(
     onPrimary = BusbyBlackLight,
     onBackground = BusbyWhiteLight,
     onSurface = BusbyWhiteLight,
-    onSurfaceVariant = BusbyGrayLight
+    onSurfaceVariant = BusbyGrayLight,
+    error = BusbyDarkRed
 )
 
 @Composable
@@ -46,7 +48,7 @@ fun BusbyRunnerTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
+   /* val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
@@ -54,7 +56,9 @@ fun BusbyRunnerTheme(
 
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
-    }
+    }*/
+
+    val colorScheme = if(darkTheme) DarkColorScheme else LightColorScheme
 
     val view = LocalView.current
     if (!view.isInEditMode) {

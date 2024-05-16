@@ -36,7 +36,7 @@ dependencies {
     implementation(libs.coil.compose)
 
     // Compose
-    implementation(libs.androidx.compose.bom)
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.compose.ui)
@@ -54,12 +54,15 @@ dependencies {
     // Crypto
     implementation(libs.androidx.security.crypto.ktx)
 
+    // DI
+    implementation(libs.bundles.koin)
+
     api(libs.core)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-  //  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
