@@ -33,6 +33,7 @@ import me.androidbox.core.presentation.designsystem.components.BusbyRunnerToolba
 import me.androidbox.run.domain.RunData
 import me.androidbox.run.presentation.R
 import me.androidbox.run.presentation.active_run.components.RunDataCard
+import me.androidbox.run.presentation.map.TrackerMap
 import me.androidbox.run.presentation.util.hasLocationPermission
 import me.androidbox.run.presentation.util.hasNoticationPermission
 import me.androidbox.run.presentation.util.shouldShowLocationPermissionRationale
@@ -119,6 +120,15 @@ fun ActiveRunScreen(
                     .fillMaxSize()
                     .background(color = MaterialTheme.colorScheme.surface)
             ) {
+
+                TrackerMap(
+                    isRunFinished = activeRunState.isRunFinished,
+                    currentLocation = activeRunState.currentLocation,
+                    locations = activeRunState.runData.locations,
+                    onSnapshot = {},
+                    modifier = Modifier.fillMaxSize()
+                )
+                
                 RunDataCard(
                     elapsedTime = activeRunState.elapsedTime,
                     runData = activeRunState.runData,
