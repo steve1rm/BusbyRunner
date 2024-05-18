@@ -11,7 +11,7 @@ fun ActiveRunScreenRoot() {
 
     ActiveRunScreen(
         activeRunState = activeRunViewModel.activeRunState,
-        activeRunAction = activeRunViewModel::activeRunAction)
+        onActiveRunAction = activeRunViewModel::onActiveRunAction)
 }
 
 @Composable
