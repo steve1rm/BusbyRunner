@@ -8,8 +8,11 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import me.androidbox.run.domain.RunningTracker
 
-class ActiveRunViewModel : ViewModel() {
+class ActiveRunViewModel(
+    private val runningTracker: RunningTracker
+) : ViewModel() {
 
     var activeRunState by mutableStateOf(ActiveRunState())
         private set

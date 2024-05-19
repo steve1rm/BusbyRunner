@@ -1,6 +1,9 @@
 package me.androidbox.busbyrunner
 
 import android.app.Application
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import me.androidbox.auth.data.di.authDataModule
 import me.androidbox.auth.presentation.di.authViewModelModule
 import me.androidbox.busbyrunner.di.appModule
@@ -13,6 +16,8 @@ import org.koin.core.context.startKoin
 import timber.log.Timber
 
 class BusbyRunnerApplication : Application() {
+
+    val applicationScope = CoroutineScope(SupervisorJob())
 
     override fun onCreate() {
         super.onCreate()
