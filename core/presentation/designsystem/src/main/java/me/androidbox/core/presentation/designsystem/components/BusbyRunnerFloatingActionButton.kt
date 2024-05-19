@@ -30,9 +30,9 @@ fun BusbyRunnerFloatingActionButton(
 ) {
     Box(
         modifier = modifier
-            .clickable(onClick = onButtonClicked)
             .size(76.dp)
             .clip(CircleShape)
+            .clickable(onClick = onButtonClicked)
             .background(
                 color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
             ),
