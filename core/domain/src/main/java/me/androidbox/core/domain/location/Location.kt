@@ -23,7 +23,6 @@ data class Location(
 
         return EARTH_RADIUS_METERS * c.toFloat()
     }
-
 }
 
 @JvmInline
