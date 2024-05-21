@@ -33,6 +33,7 @@ import me.androidbox.core.presentation.designsystem.components.BusbyRunnerToolba
 import me.androidbox.run.domain.RunData
 import me.androidbox.run.presentation.R
 import me.androidbox.run.presentation.active_run.components.RunDataCard
+import me.androidbox.run.presentation.active_run.service.ActiveRunService
 import me.androidbox.run.presentation.map.TrackerMap
 import me.androidbox.run.presentation.util.hasLocationPermission
 import me.androidbox.run.presentation.util.hasNoticationPermission
@@ -45,6 +46,7 @@ import kotlin.time.Duration.Companion.minutes
 fun ActiveRunScreen(
     modifier: Modifier = Modifier,
     activeRunState: ActiveRunState,
+    onServiceToggle: (isServiceRunning: Boolean) -> Unit,
     onActiveRunAction: (activeRunAction: ActiveRunAction) -> Unit
 ) {
     val context = LocalContext.current
@@ -93,6 +95,21 @@ fun ActiveRunScreen(
 
         if(!showLocationRationale && !showNotificationRationale) {
             permissionLauncher.requestBusbyRunnerPermissions(context)
+        }
+    }
+
+    LaunchedEffect(key1 = activeRunState.shouldTrack) {
+        if(context.hasLocationPermission()
+            && activeRunState.shouldTrack
+            && !ActiveRunService.isServiceActive) {
+
+            onServiceToggle(true)
+        }
+    }
+
+    LaunchedEffect(key1 = activeRunState.isRunFinished) {
+        if(activeRunState.isRunFinished) {
+            onServiceToggle(false)
         }
     }
 
@@ -209,7 +226,8 @@ fun PreviewActiveRunScreen() {
                     pace = 3.minutes
                 )
             ),
-            onActiveRunAction = {}
+            onActiveRunAction = {},
+            onServiceToggle = {}
         )
     }
 }

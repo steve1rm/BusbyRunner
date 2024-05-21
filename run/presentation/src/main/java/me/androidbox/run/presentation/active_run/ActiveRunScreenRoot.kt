@@ -6,18 +6,23 @@ import me.androidbox.core.presentation.designsystem.BusbyRunnerTheme
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ActiveRunScreenRoot() {
-    val activeRunViewModel: ActiveRunViewModel = koinViewModel()
+fun ActiveRunScreenRoot(
+    activeRunViewModel: ActiveRunViewModel = koinViewModel(),
+    onServiceToggle: (isServiceRunning: Boolean) -> Unit
+) {
 
     ActiveRunScreen(
         activeRunState = activeRunViewModel.activeRunState,
-        onActiveRunAction = activeRunViewModel::onActiveRunAction)
+        onActiveRunAction = activeRunViewModel::onActiveRunAction,
+        onServiceToggle = onServiceToggle)
 }
 
 @Composable
 @Preview
 fun PreviewActiveRunScreenRoot() {
     BusbyRunnerTheme {
-        ActiveRunScreenRoot()
+        ActiveRunScreenRoot(
+            onServiceToggle = {}
+        )
     }
 }

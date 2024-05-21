@@ -1,15 +1,19 @@
 package me.androidbox.busbyrunner
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import me.androidbox.auth.presentation.auth.IntroScreenRoot
 import me.androidbox.auth.presentation.login.LoginScreenRoot
 import me.androidbox.auth.presentation.register.RegisterScreenRoot
 import me.androidbox.run.presentation.active_run.ActiveRunScreenRoot
+import me.androidbox.run.presentation.active_run.service.ActiveRunService
 import me.androidbox.run.presentation.run_overview.RunOverviewScreenRoot
 
 @Composable
@@ -94,8 +98,26 @@ private fun NavGraphBuilder.runGraph(navHostController: NavHostController) {
             }
         }
 
-        composable(route = "active_run") {
-            ActiveRunScreenRoot()
+        composable(
+            route = "active_run",
+            deepLinks = listOf(navDeepLink {
+                uriPattern = "busbyrunner://active_run"
+            })) {
+
+            val context = LocalContext.current
+            ActiveRunScreenRoot(
+                onServiceToggle = { shouldServiceRun ->
+                    if(shouldServiceRun) {
+                       context.startService(
+                           ActiveRunService.createStartIntent(context, MainActivity::class.java))
+                    }
+                    else {
+                        context.startService(
+                            ActiveRunService.createStopIntent(context)
+                        )
+                    }
+                }
+            )
         }
     }
 }
