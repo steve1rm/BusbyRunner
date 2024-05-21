@@ -129,7 +129,9 @@ fun ActiveRunScreen(
             BusbyRunnerFloatingActionButton(
                 icon = if(activeRunState.shouldTrack) StopIcon else StartIcon,
                 iconSize = 20.dp,
-                onButtonClicked = {})
+                onButtonClicked = {
+                    onActiveRunAction(ActiveRunAction.OnToggleRunClicked)
+                })
         },
         content = { paddingValues ->
             Box(
