@@ -34,7 +34,10 @@ class ActiveRunViewModel(
     }.stateIn(viewModelScope, SharingStarted.Lazily, activeRunState.shouldTrack)
 
     /** Only track if shouldTrack and the user has granted permissions */
-    private val isTracking = combine(shouldTrack, hasLocationPermission) { isTracking, hasLocationPermission ->
+    private val isTracking = combine(
+        shouldTrack,
+        hasLocationPermission
+    ) { isTracking, hasLocationPermission ->
         isTracking && hasLocationPermission
     }.stateIn(viewModelScope, SharingStarted.Lazily, false)
 
@@ -56,7 +59,8 @@ class ActiveRunViewModel(
             }
             .launchIn(viewModelScope)
 
-        runningTracker.currentLocation
+        runningTracker
+            .currentLocation
             .onEach { location ->
                 activeRunState = activeRunState.copy(
                     currentLocation = location?.location
@@ -64,7 +68,8 @@ class ActiveRunViewModel(
             }
             .launchIn(viewModelScope)
 
-        runningTracker.runDataState
+        runningTracker
+            .runDataState
             .onEach { runData ->
                 activeRunState = activeRunState.copy(
                     runData = runData
@@ -72,7 +77,8 @@ class ActiveRunViewModel(
             }
             .launchIn(viewModelScope)
 
-        runningTracker.elapsedTimeState
+        runningTracker
+            .elapsedTimeState
             .onEach { duration ->
                 activeRunState = activeRunState
                     .copy(elapsedTime = duration)
@@ -100,7 +106,7 @@ class ActiveRunViewModel(
             }
             ActiveRunAction.OnToggleRunClicked -> {
                 activeRunState = activeRunState.copy(
-                    hasUserStartedRunning = true,
+                    hasStartedRunning = true,
                     shouldTrack = !activeRunState.shouldTrack
                 )
             }

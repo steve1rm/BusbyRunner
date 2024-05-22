@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -23,7 +24,7 @@ import kotlin.time.Duration.Companion.seconds
 
 class RunningTracker(
     private val locationObserver: LocationObserver,
-    applicationScope: CoroutineScope
+    private val applicationScope: CoroutineScope
 ) {
 
     private val _runDataState = MutableStateFlow(RunData())
@@ -39,14 +40,13 @@ class RunningTracker(
         isTrackingState.value = isTracking
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val currentLocation = isObservingLocation
         .flatMapLatest { isObserving ->
             if(!isObserving) {
                 locationObserver.observeLocation(1_000L)
             }
             else {
-                emptyFlow()
+                flowOf()
             }
         }
         .stateIn(

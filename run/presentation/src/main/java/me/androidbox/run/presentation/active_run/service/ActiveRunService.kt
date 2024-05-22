@@ -58,6 +58,7 @@ class ActiveRunService : Service() {
     private val baseNotification by lazy {
         NotificationCompat
             .Builder(this.applicationContext, CHANNEL_ID)
+            .setOnlyAlertOnce(true)
             .setSmallIcon(me.androidbox.core.presentation.designsystem.R.drawable.logo)
             .setContentTitle(this.getString(R.string.active_run))
     }
