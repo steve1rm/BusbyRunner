@@ -160,6 +160,33 @@ fun ActiveRunScreen(
         }
     )
 
+    if(!activeRunState.shouldTrack && activeRunState.hasStartedRunning) {
+        BusbyRunnerDialog(
+            title = stringResource(R.string.running_is_paused),
+            onDismiss = {
+                onActiveRunAction(ActiveRunAction.OnResumeRunClicked)
+            },
+            description = stringResource(R.string.resume_or_finish),
+            primaryButton = {
+                BusbyRunnerOutlineActionButton(
+                    text = "",
+                    isLoading = false,
+                    onClicked = {
+                        onActiveRunAction(ActiveRunAction.OnResumeRunClicked)
+                    },
+                    modifier = Modifier.weight(1f))
+                },
+            secondaryButton = {
+                BusbyRunnerOutlineActionButton(
+                    text = stringResource(R.string.finish),
+                    isLoading = activeRunState.isSavingRun,
+                    onClicked = {
+                        onActiveRunAction(ActiveRunAction.OnFinishRunClicked)
+                    },
+                    modifier = Modifier.weight(1f))
+            })
+    }
+
     if (activeRunState.shouldShowLocationPermissionRationale || activeRunState.shouldShowNotificationPermissionRationale) {
         BusbyRunnerDialog(
             title = stringResource(R.string.permission_required),

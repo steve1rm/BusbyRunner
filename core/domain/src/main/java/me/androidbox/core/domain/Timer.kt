@@ -16,7 +16,7 @@ object Timer {
                 delay(200L)
 
                 val currentTime = System.currentTimeMillis()
-                val elapsedTime = lastEmitTime - currentTime
+                val elapsedTime = currentTime - lastEmitTime
 
                 emit(elapsedTime.milliseconds)
 
