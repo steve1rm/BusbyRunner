@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import me.androidbox.core.presentation.ui.formatted
@@ -105,11 +106,13 @@ class ActiveRunService : Service() {
     private fun stop() {
         this.stopSelf()
         isServiceActive = false
-        activeRunServiceScope.cancel()
 
         /** Once the scope has been cancelled it won't be able to be started again,
          * so have to initialize a new job with a dispatcher */
-        activeRunServiceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+        // activeRunServiceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
+        /** Update only cancels the children so we don't have to re-initialize the scope again */
+        activeRunServiceScope.coroutineContext.cancelChildren()
     }
 
     private fun updateNotification() {

@@ -15,12 +15,15 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import me.androidbox.run.domain.RunningTracker
+import me.androidbox.run.presentation.active_run.service.ActiveRunService
 
 class ActiveRunViewModel(
     private val runningTracker: RunningTracker,
 ) : ViewModel() {
 
-    var activeRunState by mutableStateOf(ActiveRunState())
+    var activeRunState by mutableStateOf(ActiveRunState(
+        shouldTrack = ActiveRunService.isServiceActive && runningTracker.isTrackingState.value,
+        hasStartedRunning = ActiveRunService.isServiceActive))
         private set
 
     private val eventChannel = Channel<ActiveRunEvent>()
@@ -127,6 +130,13 @@ class ActiveRunViewModel(
                     shouldShowNotificationPermissionRationale = false
                 )
             }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        if(!ActiveRunService.isServiceActive) {
+            runningTracker.stopObservingLocation()
         }
     }
 }

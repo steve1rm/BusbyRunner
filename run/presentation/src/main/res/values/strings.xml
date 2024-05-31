@@ -17,4 +17,5 @@
     <string name="running_is_paused">Running is paused</string>
     <string name="resume_or_finish">Do you want to resume or finish your run</string>
     <string name="finish">Finish</string>
+    <string name="resume">Resume</string>
 </resources>
