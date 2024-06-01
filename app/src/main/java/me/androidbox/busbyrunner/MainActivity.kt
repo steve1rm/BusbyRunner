@@ -9,7 +9,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
-import me.androidbox.busbyrunner.BuildConfig.MAPS_API_KEY
 import me.androidbox.core.presentation.designsystem.BusbyRunnerTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
