@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import me.androidbox.core.presentation.designsystem.BusbyRunnerTheme
 import me.androidbox.core.presentation.designsystem.StartIcon
 import me.androidbox.core.presentation.designsystem.StopIcon
+import me.androidbox.core.presentation.designsystem.components.BusbyRunnerActionButton
 import me.androidbox.core.presentation.designsystem.components.BusbyRunnerDialog
 import me.androidbox.core.presentation.designsystem.components.BusbyRunnerFloatingActionButton
 import me.androidbox.core.presentation.designsystem.components.BusbyRunnerOutlineActionButton
@@ -159,6 +160,33 @@ fun ActiveRunScreen(
             }
         }
     )
+
+    if(!activeRunState.shouldTrack && activeRunState.hasStartedRunning) {
+        BusbyRunnerDialog(
+            title = stringResource(R.string.running_is_paused),
+            onDismiss = {
+                onActiveRunAction(ActiveRunAction.OnResumeRunClicked)
+            },
+            description = stringResource(R.string.resume_or_finish),
+            primaryButton = {
+                BusbyRunnerActionButton(
+                    text = stringResource(R.string.resume),
+                    isLoading = false,
+                    onClicked = {
+                        onActiveRunAction(ActiveRunAction.OnResumeRunClicked)
+                    },
+                    modifier = Modifier.weight(1f))
+                },
+            secondaryButton = {
+                BusbyRunnerOutlineActionButton(
+                    text = stringResource(R.string.finish),
+                    isLoading = activeRunState.isSavingRun,
+                    onClicked = {
+                        onActiveRunAction(ActiveRunAction.OnFinishRunClicked)
+                    },
+                    modifier = Modifier.weight(1f))
+            })
+    }
 
     if (activeRunState.shouldShowLocationPermissionRationale || activeRunState.shouldShowNotificationPermissionRationale) {
         BusbyRunnerDialog(

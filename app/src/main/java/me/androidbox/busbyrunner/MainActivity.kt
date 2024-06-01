@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        BuildConfig.API_KEY
         installSplashScreen().apply {
            this.setKeepOnScreenCondition {
                mainViewModel.mainState.isAuthenticating

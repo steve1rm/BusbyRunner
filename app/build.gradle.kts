@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.busbyrunner.application.android.compose)
     alias(libs.plugins.busbyrunner.jvm.ktor)
-    alias(libs.plugins.mapsplatform.secrets.plugin)
 }
 
 android {

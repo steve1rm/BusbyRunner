@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -23,30 +24,31 @@ import kotlin.time.Duration.Companion.seconds
 
 class RunningTracker(
     private val locationObserver: LocationObserver,
-    applicationScope: CoroutineScope
+    private val applicationScope: CoroutineScope
 ) {
 
     private val _runDataState = MutableStateFlow(RunData())
     val runDataState = _runDataState.asStateFlow()
 
-    private val isTrackingState = MutableStateFlow(false)
+    private val _isTrackingState = MutableStateFlow(false)
+    val isTrackingState = _isTrackingState.asStateFlow()
+
     private val isObservingLocation = MutableStateFlow(false)
 
     private val _elapsedTimeState = MutableStateFlow(Duration.ZERO)
     val elapsedTimeState = _elapsedTimeState.asStateFlow()
 
     fun setIsTracking(isTracking: Boolean) {
-        isTrackingState.value = isTracking
+        _isTrackingState.value = isTracking
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val currentLocation = isObservingLocation
         .flatMapLatest { isObserving ->
             if(!isObserving) {
                 locationObserver.observeLocation(1_000L)
             }
             else {
-                emptyFlow()
+                flowOf()
             }
         }
         .stateIn(
@@ -55,7 +57,21 @@ class RunningTracker(
             null)
 
     init {
-        isTrackingState
+        _isTrackingState
+            .onEach { isTracking ->
+                if(!isTracking) {
+                    val newList = buildList {
+                        addAll(runDataState.value.locations)
+                        add(emptyList<LocationTimestamp>())
+                    }.toList()
+
+                    _runDataState.update { runData ->
+                        runData.copy(
+                            locations = newList
+                        )
+                    }
+                }
+            }
             .flatMapLatest { isTracking ->
                 if(isTracking) {
                     Timer.timeAndEmit()
@@ -71,7 +87,7 @@ class RunningTracker(
 
         currentLocation
             .filterNotNull()
-            .combineTransform(isTrackingState) { currentLocation, isTracking ->
+            .combineTransform(_isTrackingState) { currentLocation, isTracking ->
                 if(isTracking) {
                     emit(currentLocation)
                 }

@@ -4,17 +4,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,7 +21,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import me.androidbox.core.presentation.designsystem.BusbyRunnerTheme
-import me.androidbox.core.presentation.designsystem.R
 
 @Composable
 fun BusbyRunnerDialog(
@@ -31,8 +28,8 @@ fun BusbyRunnerDialog(
     title: String,
     onDismiss: () -> Unit,
     description: String,
-    primaryButton: @Composable () -> Unit,
-    secondaryButton: @Composable (() -> Unit)? = null,
+    primaryButton: @Composable RowScope.() -> Unit,
+    secondaryButton: @Composable (RowScope.() -> Unit)? = null,
 ) {
     Dialog(onDismissRequest = onDismiss,
         properties = DialogProperties()
@@ -60,9 +57,9 @@ fun BusbyRunnerDialog(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                secondaryButton?.invoke()
+                secondaryButton?.invoke(this)
                 primaryButton()
             }
         }
@@ -76,15 +73,17 @@ fun PreviewBusbyRunnerDialog() {
         BusbyRunnerDialog(
             title = "notification",
             onDismiss = {},
-            description = "felis",
+            description = "Resume or finish your run",
             primaryButton = {
                 BusbyRunnerOutlineActionButton(
-                    text = stringResource(R.string.okay), isLoading = false ) {
+                    text = "Resume", isLoading = false ) {
                 }
             },
-            secondaryButton ={ Button(onClick = { }) {
-                Text(text = "Resume")
-            }},
+            secondaryButton ={
+                BusbyRunnerOutlineActionButton(
+                    text = "Finish", isLoading = false ) {
+                }
+            },
             modifier = Modifier,
         )
     }

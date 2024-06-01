@@ -15,12 +15,15 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import me.androidbox.run.domain.RunningTracker
+import me.androidbox.run.presentation.active_run.service.ActiveRunService
 
 class ActiveRunViewModel(
     private val runningTracker: RunningTracker,
 ) : ViewModel() {
 
-    var activeRunState by mutableStateOf(ActiveRunState())
+    var activeRunState by mutableStateOf(ActiveRunState(
+        shouldTrack = ActiveRunService.isServiceActive && runningTracker.isTrackingState.value,
+        hasStartedRunning = ActiveRunService.isServiceActive))
         private set
 
     private val eventChannel = Channel<ActiveRunEvent>()
@@ -34,7 +37,10 @@ class ActiveRunViewModel(
     }.stateIn(viewModelScope, SharingStarted.Lazily, activeRunState.shouldTrack)
 
     /** Only track if shouldTrack and the user has granted permissions */
-    private val isTracking = combine(shouldTrack, hasLocationPermission) { isTracking, hasLocationPermission ->
+    private val isTracking = combine(
+        shouldTrack,
+        hasLocationPermission
+    ) { isTracking, hasLocationPermission ->
         isTracking && hasLocationPermission
     }.stateIn(viewModelScope, SharingStarted.Lazily, false)
 
@@ -56,7 +62,8 @@ class ActiveRunViewModel(
             }
             .launchIn(viewModelScope)
 
-        runningTracker.currentLocation
+        runningTracker
+            .currentLocation
             .onEach { location ->
                 activeRunState = activeRunState.copy(
                     currentLocation = location?.location
@@ -64,7 +71,8 @@ class ActiveRunViewModel(
             }
             .launchIn(viewModelScope)
 
-        runningTracker.runDataState
+        runningTracker
+            .runDataState
             .onEach { runData ->
                 activeRunState = activeRunState.copy(
                     runData = runData
@@ -72,7 +80,8 @@ class ActiveRunViewModel(
             }
             .launchIn(viewModelScope)
 
-        runningTracker.elapsedTimeState
+        runningTracker
+            .elapsedTimeState
             .onEach { duration ->
                 activeRunState = activeRunState
                     .copy(elapsedTime = duration)
@@ -100,7 +109,7 @@ class ActiveRunViewModel(
             }
             ActiveRunAction.OnToggleRunClicked -> {
                 activeRunState = activeRunState.copy(
-                    hasUserStartedRunning = true,
+                    hasStartedRunning = true,
                     shouldTrack = !activeRunState.shouldTrack
                 )
             }
@@ -121,6 +130,13 @@ class ActiveRunViewModel(
                     shouldShowNotificationPermissionRationale = false
                 )
             }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        if(!ActiveRunService.isServiceActive) {
+            runningTracker.stopObservingLocation()
         }
     }
 }
