@@ -14,14 +14,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val mainViweModel by viewModel<MainViewModel>()
+    private val mainViewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         installSplashScreen().apply {
            this.setKeepOnScreenCondition {
-               mainViweModel.mainState.isAuthenticating
+               mainViewModel.mainState.isAuthenticating
            }
         }
 
@@ -31,10 +31,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background) {
 
-                    if(!mainViweModel.mainState.isAuthenticating) {
+                    if(!mainViewModel.mainState.isAuthenticating) {
                         val navHostController = rememberNavController()
                         NavigationRoot(
-                            isLoggedIn = mainViweModel.mainState.isLoggedIn,
+                            isLoggedIn = mainViewModel.mainState.isLoggedIn,
                             navHostController = navHostController)
                     }
                 }

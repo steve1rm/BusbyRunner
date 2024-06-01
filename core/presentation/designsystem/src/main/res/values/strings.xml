@@ -3,4 +3,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="show_password">show password</string>
     <string name="hide_password">hide password</string>
+    <string name="go_back">Go back</string>
+    <string name="open_drop_down">Open drop down menu</string>
+    <string name="okay">Okay</string>
 </resources>

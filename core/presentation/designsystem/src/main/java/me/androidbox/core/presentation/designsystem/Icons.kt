@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 
 
-val analyticIcon: ImageVector
+val AnalyticIcon: ImageVector
     @Composable
     get() {
         return ImageVector.vectorResource(id = R.drawable.analytics)
