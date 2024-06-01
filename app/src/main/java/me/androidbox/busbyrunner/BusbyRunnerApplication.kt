@@ -8,6 +8,7 @@ import me.androidbox.auth.data.di.authDataModule
 import me.androidbox.auth.presentation.di.authViewModelModule
 import me.androidbox.busbyrunner.di.appModule
 import me.androidbox.core.data.di.coreDataModule
+import me.androidbox.core.database.di.databaseModule
 import me.androidbox.run.location.di.locationModule
 import me.androidbox.run.presentation.di.runViewModelModule
 import org.koin.android.ext.koin.androidContext
@@ -35,7 +36,8 @@ class BusbyRunnerApplication : Application() {
                 authDataModule,
                 coreDataModule,
                 runViewModelModule,
-                locationModule
+                locationModule,
+                databaseModule
             )
         }
     }
