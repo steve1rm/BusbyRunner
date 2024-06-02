@@ -10,7 +10,6 @@ import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.cio.Request
-import io.ktor.util.InternalAPI
 import io.ktor.util.network.UnresolvedAddressException
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.SerializationException
@@ -18,7 +17,7 @@ import me.androidbox.core.data.BuildConfig
 import me.androidbox.core.domain.util.DataError
 import me.androidbox.core.domain.util.Result
 
-suspend inline fun <reified T : Any> HttpClient.get(route: String, queryParameters: Map<String, Any?>): Result<T, DataError.Network> {
+suspend inline fun <reified T : Any> HttpClient.get(route: String, queryParameters: Map<String, Any?> = emptyMap()): Result<T, DataError.Network> {
     return safeCall {
         get {
             this.url(constructRoute(route))
