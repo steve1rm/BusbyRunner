@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.zip
 import me.androidbox.core.domain.Timer
 import kotlin.math.roundToInt
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.ZERO
 import kotlin.time.Duration.Companion.seconds
 
 class RunningTracker(
@@ -139,6 +140,13 @@ class RunningTracker(
 
     fun stopObservingLocation() {
         isObservingLocation.value = false
+    }
+
+    fun finishedRun() {
+        stopObservingLocation()
+        setIsTracking(false)
+        _elapsedTimeState.value = ZERO
+        _runDataState.value = RunData()
     }
 }
 

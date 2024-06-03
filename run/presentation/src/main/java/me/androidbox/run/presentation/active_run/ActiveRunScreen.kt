@@ -3,6 +3,7 @@ package me.androidbox.run.presentation.active_run
 import android.Manifest
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -40,6 +41,7 @@ import me.androidbox.run.presentation.util.hasLocationPermission
 import me.androidbox.run.presentation.util.hasNoticationPermission
 import me.androidbox.run.presentation.util.shouldShowLocationPermissionRationale
 import me.androidbox.run.presentation.util.shouldShowNotificationPermissionRationale
+import java.io.ByteArrayOutputStream
 import kotlin.time.Duration.Companion.minutes
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -145,7 +147,17 @@ fun ActiveRunScreen(
                     isRunFinished = activeRunState.isRunFinished,
                     currentLocation = activeRunState.currentLocation,
                     locations = activeRunState.runData.locations,
-                    onSnapshot = {},
+                    onSnapshot = { bitmap ->
+                        val stream = ByteArrayOutputStream()
+                        stream.use {
+                            bitmap.compress(
+                                Bitmap.CompressFormat.JPEG,
+                                80,
+                                it
+                            )
+                        }
+                        onActiveRunAction(ActiveRunAction.OnRunProcessed(stream.toByteArray()))
+                    },
                     modifier = Modifier.fillMaxSize()
                 )
                 
