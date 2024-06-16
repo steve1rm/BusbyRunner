@@ -4,5 +4,6 @@ sealed interface RunOverviewAction {
     data object OnStartClicked: RunOverviewAction
     data object OnLogoutClicked: RunOverviewAction
     data object OnAnalyticsClicked: RunOverviewAction
+    data class OnDeleteRun(val runID: String) : RunOverviewAction
 }
 

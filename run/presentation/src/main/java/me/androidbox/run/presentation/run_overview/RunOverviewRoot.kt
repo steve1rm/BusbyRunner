@@ -21,7 +21,8 @@ fun RunOverviewScreenRoot(
                     runOverviewViewModel.runOverviewAction(runOverviewAction)
                 }
             }
-        }
+        },
+        runOverviewState = runOverviewViewModel.runOverviewState
     )
 }
 

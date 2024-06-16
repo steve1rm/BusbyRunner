@@ -18,12 +18,14 @@ class AuthorizationRepositoryImp(
         email: String,
         password: String
     ): EmptyResult<DataError.Network> {
-        return httpClient.post<RegisterRequest, Unit>(
+        val result = httpClient.post<RegisterRequest, Unit>(
             route = "/register",
             body = RegisterRequest(
                 email = email,
                 password = password)
         )
+
+        return result
     }
 
     override suspend fun login(email: String, password: String): EmptyResult<DataError.Network> {

@@ -19,6 +19,9 @@ import me.androidbox.core.domain.location.Latitude
 import me.androidbox.core.domain.location.Location
 import me.androidbox.core.domain.location.Longitude
 import me.androidbox.core.domain.run.RunModel
+import me.androidbox.core.domain.run.RunRepository
+import me.androidbox.core.domain.util.Result
+import me.androidbox.core.presentation.ui.toUiText
 import me.androidbox.run.domain.LocationDataCalculator
 import me.androidbox.run.domain.RunningTracker
 import me.androidbox.run.presentation.active_run.service.ActiveRunService
@@ -27,6 +30,7 @@ import java.time.ZonedDateTime
 
 class ActiveRunViewModel(
     private val runningTracker: RunningTracker,
+    private val runRepository: RunRepository
 ) : ViewModel() {
 
     var activeRunState by mutableStateOf(ActiveRunState(
@@ -172,9 +176,18 @@ class ActiveRunViewModel(
                 mapPictureUrl = null
             )
 
-            // save run in repository
-
             runningTracker.finishedRun()
+
+            // save run in repository
+            when(val result = runRepository.upsertRun(runModel, mapPictureBytes)) {
+                is Result.Failure -> {
+                    eventChannel.trySend(ActiveRunEvent.SaveRunFailure(result.error.toUiText()))
+                }
+                is Result.Success -> {
+                    eventChannel.trySend(ActiveRunEvent.SaveRunSuccess)
+                }
+            }
+
             activeRunState = activeRunState.copy(
                 isSavingRun = false
             )

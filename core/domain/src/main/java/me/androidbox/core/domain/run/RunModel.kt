@@ -5,7 +5,7 @@ import java.time.ZonedDateTime
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
-class RunModel(
+data class RunModel(
     val id: String?, // null if new run
     val duration: Duration,
     val dateTimeUtc: ZonedDateTime,
