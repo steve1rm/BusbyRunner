@@ -34,6 +34,7 @@ class RunOverviewViewModel(
             /** If new runs are added remotely, this will fetch and insert them in the room
              *  which will trigger `getRuns()` as we are observing changes from room db.
              *  So the above getRuns() will update the state with new runs */
+            runRepository.syncPendingRuns()
             runRepository.fetchRuns()
         }
     }

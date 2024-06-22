@@ -20,6 +20,7 @@ val databaseModule = module {
 
     single {
         get<RunDatabase>().runDao
+        get<RunDatabase>().runPendingSyncDao
     }
 
     single<LocalRunDataSource> {
