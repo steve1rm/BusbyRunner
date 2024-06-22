@@ -14,6 +14,7 @@ import me.androidbox.core.domain.run.RemoteRunDataSource
 import me.androidbox.core.domain.run.RunId
 import me.androidbox.core.domain.run.RunModel
 import me.androidbox.core.domain.run.RunRepository
+import me.androidbox.core.domain.run.SyncRunScheduler
 import me.androidbox.core.domain.util.DataError
 import me.androidbox.core.domain.util.EmptyResult
 import me.androidbox.core.domain.util.Result
@@ -24,7 +25,8 @@ class OfflineFirstRunRepository(
     private val remoteRunDataSource: RemoteRunDataSource,
     private val applicationScope: CoroutineScope,
     private val runPendingSyncDao: RunPendingSyncDao,
-    private val sessionStorage: SessionStorage
+    private val sessionStorage: SessionStorage,
+    private val syncRunScheduler: SyncRunScheduler
 ) : RunRepository {
 
     override fun getRuns(): Flow<List<RunModel>> {
@@ -57,6 +59,14 @@ class OfflineFirstRunRepository(
 
             return when(remoteResult) {
                 is Result.Failure -> {
+                    applicationScope.launch {
+                        syncRunScheduler.scheduleSync(
+                            syncType = SyncRunScheduler.SyncType.CreateRun(
+                                runModel = runModel,
+                                mapPictureBytes = mapPicture
+                            )
+                        )
+                    }.join()
                     Result.Success(Unit)
                 }
                 is Result.Success -> {
@@ -84,9 +94,19 @@ class OfflineFirstRunRepository(
             runPendingSyncDao.deleteRunPendingSyncEntity(runId = id)
         }
         else {
-            applicationScope.async {
+            val result = applicationScope.async {
                 remoteRunDataSource.deleteRun(id)
             }.await()
+
+            if(result is Result.Failure) {
+                applicationScope.launch {
+                    syncRunScheduler.scheduleSync(
+                        syncType = SyncRunScheduler.SyncType.DeleteRun(
+                            runId =  id
+                        )
+                    )
+                }.join()
+            }
         }
     }
 

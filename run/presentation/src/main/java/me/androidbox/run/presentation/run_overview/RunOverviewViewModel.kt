@@ -9,16 +9,24 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import me.androidbox.core.domain.run.RunRepository
+import me.androidbox.core.domain.run.SyncRunScheduler
 import me.androidbox.run.presentation.run_overview.mappers.toRunUi
+import kotlin.time.Duration.Companion.minutes
 
 class RunOverviewViewModel(
-    private val runRepository: RunRepository
+    private val runRepository: RunRepository,
+    private val syncRunScheduler: SyncRunScheduler
 ) : ViewModel() {
 
     var runOverviewState by mutableStateOf(RunOverviewState())
         private set
 
     init {
+        viewModelScope.launch {
+            syncRunScheduler.scheduleSync(
+                syncType = SyncRunScheduler.SyncType.FetchRuns(30.minutes))
+        }
+
         runRepository.getRuns()
             .onEach { listOfRuns ->
                 val runUi = listOfRuns.map {
