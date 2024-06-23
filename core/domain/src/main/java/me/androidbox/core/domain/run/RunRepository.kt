@@ -14,8 +14,12 @@ interface RunRepository {
 
     suspend fun deleteRun(id: RunId)
 
+    suspend fun deleteAllRuns()
+
     /** Has execute before fetching new runs so these will be deleted
      *  from the BE so the BE won't fetch ones already deleted locally
      *  check locally => check remotely (in this order) */
     suspend fun syncPendingRuns()
+
+    suspend fun logout(): EmptyResult<DataError.Network>
 }

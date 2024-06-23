@@ -7,6 +7,7 @@ import me.androidbox.run.data.workers.DeleteRunWorker
 import me.androidbox.run.data.workers.FetchRunsWorker
 import org.koin.androidx.workmanager.dsl.workerOf
 import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val runDataModule = module {
@@ -14,5 +15,5 @@ val runDataModule = module {
     workerOf(::DeleteRunWorker)
     workerOf(::FetchRunsWorker)
 
-    singleOf(::SyncRunWorkerSchedulerImp).bind<SyncRunScheduler>
+    singleOf(::SyncRunWorkerSchedulerImp).bind<SyncRunScheduler>()
 }

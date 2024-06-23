@@ -1,11 +1,17 @@
 package me.androidbox.core.data.run
 
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerAuthProvider
+import io.ktor.client.plugins.auth.providers.BearerTokens
+import io.ktor.client.plugins.plugin
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.androidbox.core.data.networking.get
 import me.androidbox.core.database.dao.RunPendingSyncDao
 import me.androidbox.core.database.mappers.toRunModel
 import me.androidbox.core.domain.SessionStorage
@@ -26,7 +32,8 @@ class OfflineFirstRunRepository(
     private val applicationScope: CoroutineScope,
     private val runPendingSyncDao: RunPendingSyncDao,
     private val sessionStorage: SessionStorage,
-    private val syncRunScheduler: SyncRunScheduler
+    private val syncRunScheduler: SyncRunScheduler,
+    private val client: HttpClient
 ) : RunRepository {
 
     override fun getRuns(): Flow<List<RunModel>> {
@@ -174,5 +181,21 @@ class OfflineFirstRunRepository(
                 }
             }
         }
+    }
+
+    override suspend fun deleteAllRuns() {
+        localRunDataSource.deleteAllRuns()
+    }
+
+    override suspend fun logout(): EmptyResult<DataError.Network> {
+        val result = client.get<Unit>(
+            route = "/logout"
+        ).asEmptyResult()
+
+        client.plugin(Auth).providers.filterIsInstance<BearerAuthProvider>()
+            .firstOrNull()
+            ?.clearToken()
+
+        return result
     }
 }

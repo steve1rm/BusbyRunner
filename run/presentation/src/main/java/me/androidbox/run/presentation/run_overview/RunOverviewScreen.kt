@@ -37,7 +37,7 @@ import me.androidbox.run.presentation.run_overview.components.RunListItem
 @Composable
 fun RunOverviewScreen(
     runOverviewState: RunOverviewState,
-    runOverviewAction: (RunOverviewAction) -> Unit
+    runOverviewAction: (RunOverviewAction) -> Unit,
 ) {
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(

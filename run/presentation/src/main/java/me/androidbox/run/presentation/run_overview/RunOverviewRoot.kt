@@ -8,6 +8,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun RunOverviewScreenRoot(
     runOverviewViewModel: RunOverviewViewModel = koinViewModel(),
+    onLogoutClicked: () -> Unit,
     onStartRunClicked: () -> Unit,
 ) {
 
@@ -31,7 +32,8 @@ fun RunOverviewScreenRoot(
 fun PreviewRunOverviewScreenRoot() {
     BusbyRunnerTheme {
         RunOverviewScreenRoot(
-            onStartRunClicked = {}
+            onStartRunClicked = {},
+            onLogoutClicked = {}
         )
     }
 }
