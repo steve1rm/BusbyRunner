@@ -126,6 +126,7 @@ busbyrunner-android-feature-ui = { id = "busbyrunner.android.feature.ui", versio
 busbyrunner-android-room = { id = "busbyrunner.android.room", version = "unspecified" }
 busbyrunner-jvm-library = { id = "busbyrunner.jvm.library", version = "unspecified" }
 busbyrunner-jvm-ktor = { id = "busbyrunner.jvm.ktor", version = "unspecified" }
+busbyrunner-android-dynamic-feature = { id = "busbyrunner.android.dynamic.feature", version = "unspecified"}
 
 [bundles]
 compose = [

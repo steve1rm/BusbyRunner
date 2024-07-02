@@ -53,5 +53,10 @@ gradlePlugin {
             this.id = "busbyrunner.jvm.ktor"
             this.implementationClass = "JvmKtorConventionPlugin"
         }
+
+        this.register("androidDynamicFeature") {
+            this.id = "busbyrunner.android.dynamic.feature"
+            this.implementationClass = "AndroidDynamicFeatureConventionPlugin"
+        }
     }
 }
