@@ -49,7 +49,7 @@ class RunningTracker(
                 locationObserver.observeLocation(1_000L)
             }
             else {
-                flowOf()
+                emptyFlow()
             }
         }
         .stateIn(
