@@ -7,10 +7,6 @@ import org.gradle.kotlin.dsl.dependencies
 internal fun Project.configureAndroidCompose(commonExtension: CommonExtension<*,*,*,*,*,*>) {
 
     commonExtension.run {
-        this.composeOptions {
-            this.kotlinCompilerExtensionVersion = libs.findVersion("composeCompiler").get().toString()
-        }
-
         this.buildFeatures {
             compose = true
         }

@@ -26,11 +26,11 @@ fun BusbyRunnerScaffold(
 
         if (withGradient) {
             GradientBackground {
-                content(paddingValues = paddingValues)
+                content(paddingValues)
             }
         }
         else {
-            content(paddingValues = paddingValues)
+            content(paddingValues)
         }
     }
 }

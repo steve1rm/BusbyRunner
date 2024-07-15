@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package me.androidbox.auth.presentation.register
 
 import android.content.res.Configuration
@@ -37,7 +39,6 @@ import me.androidbox.core.presentation.designsystem.components.BusbyRunnerPasswo
 import me.androidbox.core.presentation.designsystem.components.BusbyRunnerTextField
 import me.androidbox.core.presentation.designsystem.components.PasswordRequirement
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RegisterScreen(
     registerState: RegisterState,

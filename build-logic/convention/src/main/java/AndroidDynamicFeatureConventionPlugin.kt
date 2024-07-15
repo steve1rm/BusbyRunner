@@ -16,6 +16,7 @@ class AndroidDynamicFeatureConventionPlugin : Plugin<Project> {
             this.pluginManager.run {
                 this.apply("com.android.dynamic-feature")
                 this.apply("org.jetbrains.kotlin.android")
+                this.apply("org.jetbrains.kotlin.plugin.compose")
             }
 
             this.extensions.configure(DynamicFeatureExtension::class.java) {

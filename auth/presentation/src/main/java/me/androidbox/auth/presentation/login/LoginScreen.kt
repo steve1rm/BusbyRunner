@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package me.androidbox.auth.presentation.login
 
 import android.content.res.Configuration
@@ -37,7 +39,6 @@ import me.androidbox.core.presentation.designsystem.components.BusbyRunnerPasswo
 import me.androidbox.core.presentation.designsystem.components.BusbyRunnerTextField
 import me.androidbox.core.presentation.designsystem.components.GradientBackground
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LoginScreen(
     loginState: LoginState,
@@ -155,7 +156,6 @@ private fun buildDescriptionAnnotatedString(): AnnotatedString {
     return annotatedString
 }
 
-
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
 fun PreviewLoginScreen() {
@@ -166,4 +166,3 @@ fun PreviewLoginScreen() {
         )
     }
 }
-

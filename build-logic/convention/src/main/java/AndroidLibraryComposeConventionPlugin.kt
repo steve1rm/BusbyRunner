@@ -10,6 +10,7 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
         target.run {
             this.pluginManager.run {
                 this.apply("busbyrunner.android.library")
+                this.apply("org.jetbrains.kotlin.plugin.compose")
             }
             // val extension = this.extensions.getByType<CommonExtension<*, *, *, *, *, *>>()
             val extension = this.extensions.getByType<LibraryExtension>()

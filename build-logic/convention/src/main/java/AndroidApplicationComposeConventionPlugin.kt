@@ -9,6 +9,7 @@ class AndroidApplicationComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.run {
             this.pluginManager.apply("busbyrunner.application.android")
+            this.pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
 
             this.configure<ApplicationExtension> {
                 configureAndroidCompose(this)
