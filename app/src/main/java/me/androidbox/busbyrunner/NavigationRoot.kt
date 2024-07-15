@@ -1,6 +1,5 @@
 package me.androidbox.busbyrunner
 
-import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
@@ -19,14 +18,15 @@ import me.androidbox.run.presentation.run_overview.RunOverviewScreenRoot
 @Composable
 fun NavigationRoot(
     isLoggedIn: Boolean,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    onAnalyticClicked: () -> Unit
 ) {
     NavHost(
         navController = navHostController,
         startDestination = if(isLoggedIn) "run" else "auth"
     ) {
         authGraph(navHostController)
-        runGraph(navHostController)
+        runGraph(navHostController, onAnalyticClicked)
     }
 }
 
@@ -87,7 +87,7 @@ private fun NavGraphBuilder.authGraph(navHostController: NavHostController) {
     }
 }
 
-private fun NavGraphBuilder.runGraph(navHostController: NavHostController) {
+private fun NavGraphBuilder.runGraph(navHostController: NavHostController, onAnalyticClicked: () -> Unit) {
     this.navigation(
         startDestination = "run_overview",
         route = "run"
@@ -96,6 +96,9 @@ private fun NavGraphBuilder.runGraph(navHostController: NavHostController) {
             RunOverviewScreenRoot(
                 onStartRunClicked = {
                     navHostController.navigate("active_run")
+                },
+                onAnalyticClicked = {
+                    onAnalyticClicked()
                 },
                 onLogoutClicked = {
                     navHostController.navigate("auth") {

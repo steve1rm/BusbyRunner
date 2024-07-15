@@ -10,6 +10,7 @@ fun RunOverviewScreenRoot(
     runOverviewViewModel: RunOverviewViewModel = koinViewModel(),
     onLogoutClicked: () -> Unit,
     onStartRunClicked: () -> Unit,
+    onAnalyticClicked: () -> Unit
 ) {
 
     RunOverviewScreen(
@@ -17,6 +18,12 @@ fun RunOverviewScreenRoot(
             when(runOverviewAction) {
                 RunOverviewAction.OnStartClicked -> {
                     onStartRunClicked()
+                }
+                RunOverviewAction.OnLogoutClicked -> {
+                    onLogoutClicked()
+                }
+                RunOverviewAction.OnAnalyticsClicked -> {
+                    onAnalyticClicked()
                 }
                 else -> {
                     runOverviewViewModel.runOverviewAction(runOverviewAction)
@@ -33,7 +40,8 @@ fun PreviewRunOverviewScreenRoot() {
     BusbyRunnerTheme {
         RunOverviewScreenRoot(
             onStartRunClicked = {},
-            onLogoutClicked = {}
+            onLogoutClicked = {},
+            onAnalyticClicked = {}
         )
     }
 }

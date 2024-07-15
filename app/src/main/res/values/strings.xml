@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">BusbyRunner</string>
     <string name="title_analytics_feature">Analytics</string>
+    <string name="could_not_load_module">Could not load module</string>
+    <string name="installing_the_analytics_module">Installing the analytics module</string>
 </resources>

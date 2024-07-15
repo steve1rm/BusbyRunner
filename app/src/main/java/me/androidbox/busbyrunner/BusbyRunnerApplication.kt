@@ -1,6 +1,8 @@
 package me.androidbox.busbyrunner
 
 import android.app.Application
+import android.content.Context
+import com.google.android.play.core.splitcompat.SplitCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import me.androidbox.auth.data.di.authDataModule
@@ -45,5 +47,10 @@ class BusbyRunnerApplication : Application() {
                 runDataModule
             )
         }
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        SplitCompat.install(this)
     }
 }

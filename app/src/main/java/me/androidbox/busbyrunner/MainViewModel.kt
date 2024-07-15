@@ -20,6 +20,11 @@ class MainViewModel(
             mainState = mainState.copy(isAuthenticating = true)
             mainState = mainState.copy(isLoggedIn = sessionStorage.get() != null)
             mainState = mainState.copy(isAuthenticating = false)
+
         }
+    }
+
+    fun setAnalyticsDialogVisibility(isVisible: Boolean) {
+        mainState = mainState.copy(showAnalyticsInstalledDialog = isVisible)
     }
 }
