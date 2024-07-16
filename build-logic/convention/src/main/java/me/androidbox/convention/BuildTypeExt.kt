@@ -82,6 +82,7 @@ private fun BuildType.configureReleaseBuildType(apiKey: String,  commonExtension
     this.buildConfigField("String", "API_KEY", "\"${apiKey}\"")
     this.buildConfigField("String", "BASE_URL", "\"https://runique.pl-coding.com:8080\"")
 
+    /** TODO Set this to true in the base build.gradle.kts */
     this.isMinifyEnabled = false
 
     this.proguardFiles(

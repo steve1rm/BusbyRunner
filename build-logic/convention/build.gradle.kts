@@ -24,6 +24,11 @@ gradlePlugin {
             this.implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
 
+        this.register("androidApplicationWearCompose") {
+            this.id = "busbyrunner.android.application.wear.compose"
+            this.implementationClass = "AndroidApplicationWearComposeConventionPlugin"
+        }
+
         this.register("androidLibrary") {
             this.id = "busbyrunner.android.library"
             this.implementationClass = "AndroidLibraryConventionPlugin"
