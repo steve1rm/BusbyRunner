@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unconnected_message">This app requires the Busby Runner app to be installed and connected</string>
+    <string name="heart_rate">Heart rate</string>
+    <string name="unsupported_heart_rate">Unsupported</string>
+    <string name="distance">Distance</string>
+    <string name="get_started">Please open the new run screen on your phone to get started</string>
+    <string name="pause_active_run">Pause active run</string>
+    <string name="start_run">Start run</string>
+    <string name="stop_run">Stop run</string>
+</resources>

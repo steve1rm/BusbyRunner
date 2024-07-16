@@ -9,14 +9,9 @@ package me.androidbox.wear.app.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.wear.compose.material3.Button
-import androidx.wear.compose.material3.Text
 import me.androidbox.core.presentation.designsystem_wear.BusbyRunnerTheme
+import me.androidbox.wear.run.presentation.TrackerScreenRoot
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,17 +19,9 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
 
-
         setContent {
             BusbyRunnerTheme {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Button(onClick = {}) {
-                        Text(text = "Hello, World of Wear")
-                    }
-                }
+                TrackerScreenRoot()
             }
         }
     }

@@ -6,12 +6,13 @@ android {
     namespace = "me.androidbox.wear.app"
 
     defaultConfig {
-        minSdk = libs.versions.projectMinSdkVersion.get().toInt()
+        minSdk = 30
     }
 }
 
 dependencies {
     implementation(projects.core.presentation.designsystemWear)
+    implementation(projects.wear.run.presentation)
 
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling)

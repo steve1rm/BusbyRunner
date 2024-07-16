@@ -6,7 +6,7 @@ android {
     namespace = "me.androidbox.wear.run.presentation"
 
     defaultConfig {
-        minSdk = libs.versions.projectMinSdkVersion.get().toInt()
+        minSdk = 30
     }
 
     buildTypes {
@@ -22,6 +22,7 @@ android {
 
 dependencies {
     implementation(projects.core.presentation.designsystemWear)
+    implementation(projects.core.presentation.ui)
 
     implementation(libs.androidx.wear.compose.ui.tooling)
     implementation(libs.androidx.wear.compose.foundation)
@@ -35,4 +36,5 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.bundles.koin.compose)
+
 }

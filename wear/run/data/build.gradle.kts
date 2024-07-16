@@ -6,7 +6,7 @@ android {
     namespace = "me.androidbox.wear.run.data"
 
     defaultConfig {
-        minSdk = libs.versions.projectMinSdkVersion.get().toInt()
+        minSdk = 30
     }
 }
 
