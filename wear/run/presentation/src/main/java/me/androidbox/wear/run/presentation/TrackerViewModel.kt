@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -17,27 +18,10 @@ class TrackerViewModel(
     private val exerciseTracker: ExerciseTracker
 ) : ViewModel() {
 
-    var trackerState by mutableStateOf(TrackerState(
-        isConnectedPhoneNearBy = true
-    ))
+    var trackerState by mutableStateOf(TrackerState())
         private set
 
     private val hasBodySensorPermission = MutableStateFlow(false)
-
-    init {
-        hasBodySensorPermission.flatMapLatest { isGranted ->
-            if(isGranted) {
-                exerciseTracker.heartRate
-            }
-            else {
-                emptyFlow()
-            }
-        }.onEach { bpm ->
-            trackerState = trackerState.copy(
-                heartRate = bpm
-            )
-        }.launchIn(viewModelScope)
-    }
 
     fun onTrackerAction(trackerAction: TrackerAction) {
         when(trackerAction) {
@@ -59,9 +43,6 @@ class TrackerViewModel(
                         trackerState = trackerState.copy(
                             canTrackHeartRate = isHeartRateTrackingSupported
                         )
-
-                        exerciseTracker.prepareExercise()
-                        exerciseTracker.startExercise()
                     }
                 }
             }
