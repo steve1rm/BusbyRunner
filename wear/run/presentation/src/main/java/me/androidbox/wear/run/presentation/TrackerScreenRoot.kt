@@ -9,7 +9,5 @@ fun TrackerScreenRoot() {
 
     TrackerScreen(
         trackerState = trackerViewModel.trackerState,
-        trackerAction = { trackerAction ->
-
-        })
+        trackerAction = trackerViewModel::onTrackerAction)
 }

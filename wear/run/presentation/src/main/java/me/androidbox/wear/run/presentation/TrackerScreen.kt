@@ -1,5 +1,10 @@
 package me.androidbox.wear.run.presentation
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,8 +21,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,6 +48,39 @@ fun TrackerScreen(
     trackerAction: (trackerAction: TrackerAction) -> Unit,
     trackerState: TrackerState
 ) {
+    val context = LocalContext.current
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { mapOfPermissions ->
+        val hasBodySensorPermissions = mapOfPermissions[Manifest.permission.BODY_SENSORS] == true
+
+        trackerAction(TrackerAction.OnBodySensorPermissionResult(hasBodySensorPermissions))
+    }
+
+    LaunchedEffect(key1 = true) {
+        val hasBodySensorPermission = context.checkSelfPermission(Manifest.permission.BODY_SENSORS) ==
+                PackageManager.PERMISSION_GRANTED
+
+        val hasNotificationPermission = if(Build.VERSION.SDK_INT >= 33) {
+            context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+
+        } else {
+            true
+        }
+
+        val listOfPermission = mutableListOf<String>()
+
+        if(!hasNotificationPermission && Build.VERSION.SDK_INT >= 33) {
+            listOfPermission.add(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
+        if(!hasBodySensorPermission) {
+            listOfPermission.add(Manifest.permission.BODY_SENSORS)
+        }
+
+        permissionLauncher.launch(listOfPermission.toTypedArray())
+    }
 
     if(trackerState.isConnectedPhoneNearBy) {
         Column(

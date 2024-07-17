@@ -23,6 +23,8 @@ android {
 dependencies {
     implementation(projects.core.presentation.designsystemWear)
     implementation(projects.core.presentation.ui)
+    implementation(projects.core.domain)
+    implementation(projects.wear.run.domain)
 
     implementation(libs.androidx.wear.compose.ui.tooling)
     implementation(libs.androidx.wear.compose.foundation)

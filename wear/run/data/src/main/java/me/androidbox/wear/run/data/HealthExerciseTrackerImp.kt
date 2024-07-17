@@ -3,6 +3,7 @@ package me.androidbox.wear.run.data
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import androidx.health.services.client.ExerciseClient
 import androidx.health.services.client.ExerciseUpdateCallback
 import androidx.health.services.client.HealthServices
 import androidx.health.services.client.HealthServicesException
@@ -35,10 +36,9 @@ import me.androidbox.wear.run.domain.ExerciseTracker
 import kotlin.math.roundToInt
 
 class HealthExerciseTrackerImp(
-    private val context: Context
+    private val context: Context,
+    private val client: ExerciseClient
 ) : ExerciseTracker {
-
-    private val client = HealthServices.getClient(context).exerciseClient
 
     override val heartRate: Flow<Int>
         get() = callbackFlow {
