@@ -12,6 +12,7 @@ android {
 
 dependencies {
     implementation(projects.core.presentation.designsystemWear)
+    implementation(projects.core.connectivity.data)
     implementation(projects.wear.run.presentation)
     implementation(projects.wear.run.data)
 

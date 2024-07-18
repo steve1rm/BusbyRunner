@@ -10,6 +10,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -24,13 +25,16 @@ import me.androidbox.core.domain.util.Result
 import me.androidbox.core.presentation.ui.toUiText
 import me.androidbox.run.domain.LocationDataCalculator
 import me.androidbox.run.domain.RunningTracker
+import me.androidbox.run.domain.WatchConnector
 import me.androidbox.run.presentation.active_run.service.ActiveRunService
+import timber.log.Timber
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 
 class ActiveRunViewModel(
     private val runningTracker: RunningTracker,
-    private val runRepository: RunRepository
+    private val runRepository: RunRepository,
+    private val watchConnector: WatchConnector
 ) : ViewModel() {
 
     var activeRunState by mutableStateOf(ActiveRunState(
@@ -43,7 +47,7 @@ class ActiveRunViewModel(
 
     private val hasLocationPermission = MutableStateFlow(false)
 
-    /** Create a flow from the compose state to track the shouldTrack state*/
+    /** Create a flow from the compose state to track the shouldTrack state */
     private val shouldTrack = snapshotFlow {
         activeRunState.shouldTrack
     }.stateIn(viewModelScope, SharingStarted.Lazily, activeRunState.shouldTrack)
@@ -57,6 +61,17 @@ class ActiveRunViewModel(
     }.stateIn(viewModelScope, SharingStarted.Lazily, false)
 
     init {
+        watchConnector.connectedDevices
+            .filterNotNull()
+            .onEach { connectedDevice ->
+                Timber.d("new device detected: ${connectedDevice.displayName}")
+                if(connectedDevice.isNearby) {
+
+                }
+            }
+            .launchIn(viewModelScope)
+
+
         hasLocationPermission
             .onEach { hasPermission ->
                 if(hasPermission) {

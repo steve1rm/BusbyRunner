@@ -8,6 +8,7 @@ import kotlinx.coroutines.SupervisorJob
 import me.androidbox.auth.data.di.authDataModule
 import me.androidbox.auth.presentation.di.authViewModelModule
 import me.androidbox.busbyrunner.di.appModule
+import me.androidbox.core.connectivity.data.di.coreConnectivityDataModule
 import me.androidbox.core.data.di.coreDataModule
 import me.androidbox.core.database.di.databaseModule
 import me.androidbox.run.data.di.runDataModule
@@ -44,7 +45,8 @@ class BusbyRunnerApplication : Application() {
                 locationModule,
                 databaseModule,
                 networkModule,
-                runDataModule
+                runDataModule,
+                coreConnectivityDataModule
             )
         }
     }

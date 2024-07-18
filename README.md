@@ -12,6 +12,7 @@ Tracking your daily runs
 - [x] Material design 3
 - [x] oAuth authentication
 - [x] Gradle dependency management
+- [x] Wear OS App
       
 ![Screenshot from 2024-05-14 22-58-53](https://github.com/steve1rm/BusbyRunner/assets/14260802/a561cdef-0819-4d9d-953f-660b48f7a9b4)
 
