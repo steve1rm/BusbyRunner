@@ -6,6 +6,7 @@ import me.androidbox.wear.run.data.HealthExerciseTrackerImp
 import me.androidbox.wear.run.data.WatchToPhoneConnector
 import me.androidbox.wear.run.domain.ExerciseTracker
 import me.androidbox.wear.run.domain.PhoneConnector
+import me.androidbox.wear.run.domain.RunningTracker
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
@@ -19,4 +20,5 @@ val wearRunDataModule = module {
 
     singleOf(::HealthExerciseTrackerImp).bind<ExerciseTracker>()
     singleOf(::WatchToPhoneConnector).bind(PhoneConnector::class)
+    singleOf(::RunningTracker)
 }

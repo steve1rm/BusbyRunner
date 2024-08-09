@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import androidx.health.services.client.ExerciseClient
 import androidx.health.services.client.ExerciseUpdateCallback
-import androidx.health.services.client.HealthServices
 import androidx.health.services.client.HealthServicesException
 import androidx.health.services.client.clearUpdateCallback
 import androidx.health.services.client.data.Availability

@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -23,6 +22,8 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.ZERO
 import kotlin.time.Duration.Companion.seconds
 
+/** Singleton class to track runs that outlive the active run viewmodel and also when using the foreground service
+ * that keeps the app alive in the background. If the app is closed it will continue to track */
 class RunningTracker(
     private val locationObserver: LocationObserver,
     private val applicationScope: CoroutineScope
