@@ -13,7 +13,9 @@ data class RunModel(
     val location: Location,
     val maxSpeedKmh: Double,
     val totalElevationMeters: Int,
-    val mapPictureUrl: String?
+    val mapPictureUrl: String?,
+    val avgHeartRete: Int?,
+    val maxHeartRate: Int?
 ) {
 
     val avgSpeedKmh: Double

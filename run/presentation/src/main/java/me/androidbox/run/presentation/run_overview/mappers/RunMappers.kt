@@ -2,6 +2,7 @@ package me.androidbox.run.presentation.run_overview.mappers
 
 import me.androidbox.core.domain.run.RunModel
 import me.androidbox.core.presentation.ui.formatted
+import me.androidbox.core.presentation.ui.toFormattedHeartRate
 import me.androidbox.core.presentation.ui.toFormattedKm
 import me.androidbox.core.presentation.ui.toFormattedMeters
 import me.androidbox.core.presentation.ui.toFormattedPace
@@ -28,6 +29,8 @@ fun RunModel.toRunUi(): RunUi {
         maxSpeed = this.maxSpeedKmh.toFormattedKm(),
         pace = duration.toFormattedPace(distanceKm),
         totalElevation = totalElevationMeters.toFormattedMeters(),
-        mapPictureUrl = this.mapPictureUrl
+        mapPictureUrl = this.mapPictureUrl,
+        maxHeartRate = this.maxHeartRate.toFormattedHeartRate(),
+        avgHeardRate = this.avgHeartRete.toFormattedHeartRate()
     )
 }

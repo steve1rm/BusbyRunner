@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -24,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.core.presentation.designsystem.BusbyRunnerTheme
 import me.androidbox.core.presentation.ui.formatted
+import me.androidbox.core.presentation.ui.toFormattedHeartRate
 import me.androidbox.core.presentation.ui.toFormattedKm
 import me.androidbox.core.presentation.ui.toFormattedPace
 import me.androidbox.run.domain.RunData
@@ -66,7 +66,7 @@ fun RunDataCard(
             RunDataItem(
                 modifier = Modifier.widthIn(min = 80.dp),
                 title = stringResource(R.string.heart_rate),
-                value = 49.toString(),
+                value = runData.heartRates.lastOrNull().toFormattedHeartRate(),
             )
 
             RunDataItem(
@@ -124,7 +124,8 @@ fun PreviewRunDataCard() {
             elapsedTime = 60.minutes,
             runData = RunData(
                 distanceMeters = 6783,
-                pace = 3.minutes
+                pace = 3.minutes,
+                heartRates = listOf(122, 157, 145, 162)
             )
         )
     }

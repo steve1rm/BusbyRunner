@@ -23,7 +23,9 @@ fun RunEntity.toRunModel(): RunModel {
         ),
         maxSpeedKmh = this.maxSpeedKmh,
         totalElevationMeters = this.totalElevationMeters,
-        mapPictureUrl = this.mapPictureUrl
+        mapPictureUrl = this.mapPictureUrl,
+        avgHeartRete = this.avgHeartRate,
+        maxHeartRate = this.maxHeartRate
     )
 }
 
@@ -38,7 +40,9 @@ fun RunModel.toRunEntity(): RunEntity {
         avgSpeedKmh = this.avgSpeedKmh,
         maxSpeedKmh = this.maxSpeedKmh,
         totalElevationMeters = this.totalElevationMeters,
-        mapPictureUrl = this.mapPictureUrl
+        mapPictureUrl = this.mapPictureUrl,
+        maxHeartRate = this.maxHeartRate,
+        avgHeartRate = this.avgHeartRete
     )
 }
 

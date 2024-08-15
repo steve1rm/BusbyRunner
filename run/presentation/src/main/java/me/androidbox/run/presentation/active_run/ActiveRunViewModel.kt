@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import me.androidbox.core.connectivity.domain.messaging.MessagingAction
 import me.androidbox.core.domain.location.Latitude
 import me.androidbox.core.domain.location.Location
 import me.androidbox.core.domain.location.Longitude
@@ -30,11 +32,13 @@ import me.androidbox.run.presentation.active_run.service.ActiveRunService
 import timber.log.Timber
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
+import kotlin.math.roundToInt
 
 class ActiveRunViewModel(
     private val runningTracker: RunningTracker,
     private val runRepository: RunRepository,
-    private val watchConnector: WatchConnector
+    private val watchConnector: WatchConnector,
+    private val applicationScope: CoroutineScope
 ) : ViewModel() {
 
     var activeRunState by mutableStateOf(ActiveRunState(
@@ -114,9 +118,35 @@ class ActiveRunViewModel(
                     .copy(elapsedTime = duration)
             }
             .launchIn(viewModelScope)
-       }
 
-    fun onActiveRunAction(activeRunAction: ActiveRunAction) {
+        listenToWatchActions()
+    }
+
+    fun onActiveRunAction(activeRunAction: ActiveRunAction, triggeredOnWatch: Boolean = false) {
+        if(!triggeredOnWatch) {
+            val messagingAction = when(activeRunAction) {
+                ActiveRunAction.OnFinishRunClicked -> MessagingAction.Finish
+                ActiveRunAction.OnResumeRunClicked -> MessagingAction.StartOrResume
+                ActiveRunAction.OnToggleRunClicked -> {
+                    if(activeRunState.hasStartedRunning) {
+                        MessagingAction.Pause
+                    }
+                    else {
+                        MessagingAction.StartOrResume
+                    }
+                }
+                else -> {
+                    null
+                }
+            }
+
+            messagingAction?.let { messagingAction ->
+                viewModelScope.launch {
+                    watchConnector.sendActionToWatch(messagingAction)
+                }
+            }
+        }
+
         when(activeRunAction) {
             ActiveRunAction.OnBackClicked -> {
                 /** Will pause tracking if the user taps the back bottom
@@ -188,7 +218,11 @@ class ActiveRunViewModel(
                 ),
                 maxSpeedKmh = LocationDataCalculator.getMaxSpeedKmh(locations),
                 totalElevationMeters = LocationDataCalculator.getTotalElevationMeters(locations),
-                mapPictureUrl = null
+                mapPictureUrl = null,
+                maxHeartRate =
+                if(activeRunState.runData.heartRates.isNotEmpty()) { activeRunState.runData.heartRates.max() } else { null },
+                avgHeartRete =
+                if(activeRunState.runData.heartRates.isNotEmpty()) {activeRunState.runData.heartRates.average().roundToInt()} else { null }
             )
 
             runningTracker.finishedRun()
@@ -209,9 +243,63 @@ class ActiveRunViewModel(
         }
     }
 
+    private fun listenToWatchActions() {
+        /** Explained in video 3.9 13.22 when we only need these events
+         *  */
+        watchConnector.messagingActions
+            .onEach { action ,->
+                when(action) {
+                    MessagingAction.ConnectionRequest -> {
+                        /** Already started a run on the phone */
+                        if(isTracking.value) {
+                            watchConnector.sendActionToWatch(
+                                MessagingAction.StartOrResume)
+                        }
+                    }
+                    MessagingAction.Finish -> {
+                        onActiveRunAction(
+                            activeRunAction = ActiveRunAction.OnFinishRunClicked,
+                            triggeredOnWatch = true)
+                    }
+                    MessagingAction.Pause -> {
+                        if(isTracking.value) {
+                            onActiveRunAction(
+                                activeRunAction = ActiveRunAction.OnToggleRunClicked,
+                                triggeredOnWatch = true
+                            )
+                        }
+                    }
+                    MessagingAction.StartOrResume -> {
+                        if(!isTracking.value) {
+                            if(activeRunState.hasStartedRunning) {
+                                onActiveRunAction(
+                                    activeRunAction = ActiveRunAction.OnToggleRunClicked,
+                                    triggeredOnWatch = true
+                                )
+                            }
+                            else {
+                                onActiveRunAction(
+                                    activeRunAction = ActiveRunAction.OnToggleRunClicked,
+                                    triggeredOnWatch = true
+                                )
+                            }
+                        }
+                    }
+                    else -> {
+                        Unit
+                    }
+                }
+            }
+    }
+
     override fun onCleared() {
         super.onCleared()
         if(!ActiveRunService.isServiceActive) {
+            /** Triggered when clicking on the back button
+             * Explained 3.9 20:00 about going back active run screen */
+            applicationScope.launch {
+                watchConnector.sendActionToWatch(MessagingAction.UnTrackable)
+            }
             runningTracker.stopObservingLocation()
         }
     }

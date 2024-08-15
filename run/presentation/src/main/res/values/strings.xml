@@ -22,6 +22,8 @@
     <string name="total_running_time">Total running time</string>
     <string name="avg_speed">Speed</string>
     <string name="max_speed">Max Speed</string>
+    <string name="avg_heart_rate">Avg Heart Rate</string>
+    <string name="max_heart_rate">Max Heart Rate</string>
     <string name="total_elevation">Total Elevation</string>
     <string name="delete_run">Delete run?</string>
 </resources>

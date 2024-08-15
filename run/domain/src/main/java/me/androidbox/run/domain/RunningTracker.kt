@@ -7,15 +7,21 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.combineTransform
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.zip
+import me.androidbox.core.connectivity.domain.messaging.MessagingAction
 import me.androidbox.core.domain.Timer
 import kotlin.math.roundToInt
 import kotlin.time.Duration
@@ -26,7 +32,8 @@ import kotlin.time.Duration.Companion.seconds
  * that keeps the app alive in the background. If the app is closed it will continue to track */
 class RunningTracker(
     private val locationObserver: LocationObserver,
-    private val applicationScope: CoroutineScope
+    private val applicationScope: CoroutineScope,
+    private val watchConnector: WatchConnector
 ) {
 
     private val _runDataState = MutableStateFlow(RunData())
@@ -57,6 +64,25 @@ class RunningTracker(
             applicationScope,
             SharingStarted.Eagerly,
             null)
+
+    private val hearRates = isTrackingState
+        .flatMapLatest { isTracking ->
+            if(isTracking) {
+                watchConnector.messagingActions
+            }
+            else {
+                emptyFlow() // Empty flow that won't emit anything
+            }
+        }
+        .filterIsInstance<MessagingAction.HeartRateUpdate>()
+        .map { heartRateUpdate ->
+            heartRateUpdate.heartRate
+        }
+        .runningFold(initial = emptyList<Int>()) { currentHeartRate, newHeartRate ->
+            // Add all the hearts into a list, as this will need to be averaged later
+            currentHeartRate + newHeartRate
+        }
+        .stateIn(applicationScope, SharingStarted.Lazily, emptyList())
 
     init {
         _isTrackingState
@@ -100,7 +126,7 @@ class RunningTracker(
                     durationTimestamps = elapsedDuration
                 )
             }
-            .onEach { locationTimestamp ->
+            .combine(hearRates) { locationTimestamp, heartRates ->
                 val currentLocations = runDataState.value.locations
 
                 val lastLocationList = if(currentLocations.isNotEmpty()) {
@@ -128,19 +154,39 @@ class RunningTracker(
                     RunData(
                         distanceMeters = distanceMeters,
                         pace = avgSecondsPerKm.seconds,
-                        locations = newLocationList
+                        locations = newLocationList,
+                        heartRates = heartRates
                     )
                 }
             }
             .launchIn(applicationScope)
+
+        _elapsedTimeState
+            .onEach { duration ->
+                watchConnector.sendActionToWatch(MessagingAction.TimeUpdate(duration))
+            }
+            .launchIn(applicationScope)
+
+        _runDataState
+            .map { runData ->
+                runData.distanceMeters
+            }
+            // RunData class pulls more data than the distance
+            // Only trigger when the distance only changed
+            .distinctUntilChanged()
+            .onEach { distance ->
+                watchConnector.sendActionToWatch(MessagingAction.DistanceUpdate(distance))
+            }
     }
 
     fun startObservingLocation() {
         isObservingLocation.value = true
+        watchConnector.setIsTrackable(isTrackable = true)
     }
 
     fun stopObservingLocation() {
         isObservingLocation.value = false
+        watchConnector.setIsTrackable(isTrackable = false)
     }
 
     fun finishedRun() {
