@@ -18,11 +18,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import me.androidbox.core.notification.ActiveRunService
 import me.androidbox.core.presentation.designsystem.BusbyRunnerTheme
 import me.androidbox.core.presentation.designsystem.StartIcon
 import me.androidbox.core.presentation.designsystem.StopIcon
@@ -35,7 +38,6 @@ import me.androidbox.core.presentation.designsystem.components.BusbyRunnerToolba
 import me.androidbox.run.domain.RunData
 import me.androidbox.run.presentation.R
 import me.androidbox.run.presentation.active_run.components.RunDataCard
-import me.androidbox.run.presentation.active_run.service.ActiveRunService
 import me.androidbox.run.presentation.map.TrackerMap
 import me.androidbox.run.presentation.util.hasLocationPermission
 import me.androidbox.run.presentation.util.hasNoticationPermission
@@ -101,10 +103,11 @@ fun ActiveRunScreen(
         }
     }
 
-    LaunchedEffect(key1 = activeRunState.shouldTrack) {
+    val isServiceActive by ActiveRunService.isServiceActive.collectAsStateWithLifecycle()
+    LaunchedEffect(key1 = activeRunState.shouldTrack, key2 = isServiceActive) {
         if(context.hasLocationPermission()
             && activeRunState.shouldTrack
-            && !ActiveRunService.isServiceActive) {
+            && !isServiceActive) {
 
             onServiceToggle(true)
         }

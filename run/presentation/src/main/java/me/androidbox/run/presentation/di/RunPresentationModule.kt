@@ -13,4 +13,8 @@ val runViewModelModule = module {
     viewModelOf(::ActiveRunViewModel)
 
     singleOf(::RunningTracker)
+
+    single {
+        get<RunningTracker>().elapsedTimeState
+    }
 }

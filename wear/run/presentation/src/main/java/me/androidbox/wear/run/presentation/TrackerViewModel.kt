@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.androidbox.core.connectivity.domain.messaging.MessagingAction
 import me.androidbox.core.domain.util.Result
+import me.androidbox.core.notification.ActiveRunService
 import me.androidbox.wear.run.domain.ExerciseTracker
 import me.androidbox.wear.run.domain.PhoneConnector
 import me.androidbox.wear.run.domain.RunningTracker
@@ -29,7 +30,12 @@ class TrackerViewModel(
     private val runningTracker: RunningTracker
 ) : ViewModel() {
 
-    var trackerState by mutableStateOf(TrackerState())
+    /** 3.10 16:00 */
+    var trackerState by mutableStateOf(TrackerState(
+        hasStartedRunning = ActiveRunService.isServiceActive.value,
+        isRunActive = ActiveRunService.isServiceActive.value && runningTracker.isTracking.value,
+        isTrackable = ActiveRunService.isServiceActive.value
+    ))
         private set
 
     /** Create a flow that will emit whenever either of the 3 states change */

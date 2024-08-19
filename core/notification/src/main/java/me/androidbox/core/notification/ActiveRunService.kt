@@ -1,4 +1,4 @@
-package me.androidbox.run.presentation.active_run.service
+package me.androidbox.core.notification
 
 import android.app.Activity
 import android.app.NotificationChannel
@@ -16,19 +16,22 @@ import androidx.core.net.toUri
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import me.androidbox.core.presentation.ui.formatted
-import me.androidbox.run.domain.RunningTracker
-import me.androidbox.run.presentation.R
 import org.koin.android.ext.android.inject
+import kotlin.time.Duration
 
 class ActiveRunService : Service() {
     companion object {
         /** we have an active run even if paused or resumed */
-        var isServiceActive: Boolean = false
+//        var isServiceActive: Boolean = false
+        private val _isServiceActive = MutableStateFlow<Boolean>(false)
+        val isServiceActive = _isServiceActive.asStateFlow()
 
         private const val CHANNEL_ID = "active_run"
         private val ACTION_START = "action_start"
@@ -49,7 +52,7 @@ class ActiveRunService : Service() {
         }
     }
 
-    private val runnerTracker by inject<RunningTracker>()
+    private val elapsedTimeState by inject<StateFlow<Duration>>()
     private var activeRunServiceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     private val notificationManager by lazy {
@@ -80,8 +83,8 @@ class ActiveRunService : Service() {
     }
 
     private fun <T> start(activityClass: Class<T>) {
-        if(!isServiceActive) {
-            isServiceActive = true
+        if(!_isServiceActive.value) {
+            _isServiceActive.value = true
             createNotificationChannel()
 
             val activityIntent = Intent(this.applicationContext, activityClass).apply {
@@ -105,7 +108,7 @@ class ActiveRunService : Service() {
 
     private fun stop() {
         this.stopSelf()
-        isServiceActive = false
+        _isServiceActive.value = false
 
         /** Once the scope has been cancelled it won't be able to be started again,
          * so have to initialize a new job with a dispatcher */
@@ -116,7 +119,7 @@ class ActiveRunService : Service() {
     }
 
     private fun updateNotification() {
-        runnerTracker.elapsedTimeState.onEach { elapsedTime ->
+        elapsedTimeState.onEach { elapsedTime ->
             val notification = baseNotification
                 .setContentText(elapsedTime.formatted())
                 .build()

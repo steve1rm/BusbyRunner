@@ -10,6 +10,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import me.androidbox.core.notification.ActiveRunService
 import me.androidbox.core.presentation.designsystem_wear.BusbyRunnerTheme
 import me.androidbox.wear.run.presentation.TrackerScreenRoot
 
@@ -21,7 +22,24 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             BusbyRunnerTheme {
-                TrackerScreenRoot()
+                TrackerScreenRoot(
+                    onServiceToggle = { shouldStartRunning ->
+                        if(shouldStartRunning) {
+                            startService(
+                                ActiveRunService.createStartIntent(
+                                    applicationContext, MainActivity::class.java
+                                )
+                            )
+                        }
+                        else {
+                            startService(
+                                ActiveRunService.createStopIntent(
+                                    applicationContext
+                                )
+                            )
+                        }
+                    }
+                )
             }
         }
     }

@@ -24,11 +24,11 @@ import me.androidbox.core.domain.location.Longitude
 import me.androidbox.core.domain.run.RunModel
 import me.androidbox.core.domain.run.RunRepository
 import me.androidbox.core.domain.util.Result
+import me.androidbox.core.notification.ActiveRunService
 import me.androidbox.core.presentation.ui.toUiText
 import me.androidbox.run.domain.LocationDataCalculator
 import me.androidbox.run.domain.RunningTracker
 import me.androidbox.run.domain.WatchConnector
-import me.androidbox.run.presentation.active_run.service.ActiveRunService
 import timber.log.Timber
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
@@ -42,8 +42,8 @@ class ActiveRunViewModel(
 ) : ViewModel() {
 
     var activeRunState by mutableStateOf(ActiveRunState(
-        shouldTrack = ActiveRunService.isServiceActive && runningTracker.isTrackingState.value,
-        hasStartedRunning = ActiveRunService.isServiceActive))
+        shouldTrack = ActiveRunService.isServiceActive.value && runningTracker.isTrackingState.value,
+        hasStartedRunning = ActiveRunService.isServiceActive.value))
         private set
 
     private val eventChannel = Channel<ActiveRunEvent>()
@@ -294,7 +294,7 @@ class ActiveRunViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        if(!ActiveRunService.isServiceActive) {
+        if(!ActiveRunService.isServiceActive.value) {
             /** Triggered when clicking on the back button
              * Explained 3.9 20:00 about going back active run screen */
             applicationScope.launch {

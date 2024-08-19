@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.run.domain)
     implementation(projects.core.connectivity.domain)
     implementation(projects.wear.run.domain)
+    implementation(projects.core.notification)
 
     implementation(libs.coil.compose)
     implementation(libs.google.maps.android.compose)
