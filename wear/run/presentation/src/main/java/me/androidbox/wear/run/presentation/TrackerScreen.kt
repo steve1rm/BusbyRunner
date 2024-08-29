@@ -41,6 +41,8 @@ import me.androidbox.core.presentation.designsystem.StartIcon
 import me.androidbox.core.presentation.ui.formatted
 import me.androidbox.core.presentation.ui.toFormattedHeartRate
 import me.androidbox.core.presentation.ui.toFormattedKm
+import me.androidbox.wear.run.presentation.ambient.AmbientObserver
+import me.androidbox.wear.run.presentation.ambient.ambientMode
 import me.androidbox.wear.run.presentation.components.RunDataCard
 
 @Composable
@@ -82,12 +84,22 @@ fun TrackerScreen(
         permissionLauncher.launch(listOfPermission.toTypedArray())
     }
 
+    AmbientObserver(
+        onEnterAmbient = { ambientDetails ->
+            trackerAction(TrackerAction.OnEnterAmbientMode(
+                burnInProtectionRequired = ambientDetails.burnInProtectionRequired
+            ))
+        },
+        onExitAmbient = {
+            trackerAction(TrackerAction.OnExitAmbientMode)
+        })
+
     if(trackerState.isConnectedPhoneNearBy) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .verticalScroll(rememberScrollState()),
+                .ambientMode(trackerState.isAmbientMode, trackerState.burnInProtectionRequired),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {

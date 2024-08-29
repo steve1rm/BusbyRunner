@@ -1,3 +1,6 @@
+@file:OptIn(FlowPreview::class)
+@file:Suppress("OPT_IN_USAGE")
+
 package me.androidbox.wear.run.presentation
 
 import androidx.compose.runtime.getValue
@@ -6,14 +9,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.androidbox.core.connectivity.domain.messaging.MessagingAction
@@ -23,6 +29,7 @@ import me.androidbox.wear.run.domain.ExerciseTracker
 import me.androidbox.wear.run.domain.PhoneConnector
 import me.androidbox.wear.run.domain.RunningTracker
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 class TrackerViewModel(
     private val exerciseTracker: ExerciseTracker,
@@ -118,29 +125,56 @@ class TrackerViewModel(
             )
         }
 
+        val isAmbientMode = snapshotFlow {
+            trackerState.isAmbientMode
+        }
+
         /** Update from watch */
-        runningTracker
-            .heartRate
+        isAmbientMode
+            .flatMapLatest { isAmbient ->
+                if(isAmbient) {
+                    runningTracker
+                        .heartRate
+                        .sample(10.seconds) // Will not emit values more frequently than every 10 seconds
+                }
+                else {
+                    runningTracker.heartRate
+                }
+            }
             .onEach { heartRate ->
-                trackerState = trackerState.copy(heartRate = heartRate)
+                trackerState = trackerState.copy(
+                    heartRate = heartRate
+                )
             }
             .launchIn(viewModelScope)
 
-        /** Update distance and elapsed time from phone */
+        isAmbientMode
+            .flatMapLatest { isAmbient ->
+                if(isAmbient) {
+                    runningTracker
+                        .elalapedTime
+                        .sample(10.seconds) // Will not emit values more frequently than every 10 seconds
+                }
+                else {
+                    runningTracker.elalapedTime
+                }
+            }
+            .onEach { elapsedTime ->
+                trackerState = trackerState.copy(
+                    elapsedDuration = elapsedTime
+                )
+            }
+            .launchIn(viewModelScope)
+
+        /** Update distance and elapsed time from phone
+         * We won't use the sample here like above as the distance
+         * meters won't update so frequency */
         runningTracker
             .distanceMeters
             .onEach { meters ->
                 trackerState = trackerState.copy(distanceMeters = meters)
             }
             .launchIn(viewModelScope)
-
-        runningTracker
-            .elalapedTime
-            .onEach { duration ->
-                trackerState = trackerState.copy(elapsedDuration = duration)
-            }
-            .launchIn(viewModelScope)
-
         listenToPhoneActions()
     }
 
@@ -172,6 +206,17 @@ class TrackerViewModel(
                         isRunActive = !trackerState.isRunActive
                     )
                 }
+            }
+
+            is TrackerAction.OnEnterAmbientMode -> {
+                trackerState = trackerState.copy(
+                    isAmbientMode = true,
+                    burnInProtectionRequired = trackerAction.burnInProtectionRequired
+                )
+            }
+            TrackerAction.OnExitAmbientMode -> {
+                trackerState = trackerState.copy(
+                    isAmbientMode = false)
             }
 
             /** This only checks the moment we grant permission */
@@ -207,6 +252,8 @@ class TrackerViewModel(
                     }
                 }
                 is TrackerAction.OnBodySensorPermissionResult -> null /** why this can't be null, */
+                is TrackerAction.OnEnterAmbientMode -> TODO()
+                TrackerAction.OnExitAmbientMode -> TODO()
             }
 
             messagingAction?.let { messagingAction ->
